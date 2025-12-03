@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import { authSchema, AuthSchemaType } from "@/features/auth/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/features/auth/components/ErrorText";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import handleLogin from "@/features/auth/utils/handleLogin";
 
 export default function Login() {
   const {
@@ -20,6 +23,16 @@ export default function Login() {
   } = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
   });
+
+  const loginMutation = useMutation({
+    mutationFn: handleLogin,
+    onSuccess: (data) => toast.success(data.message),
+    onError: (error) => toast.error(error.message),
+  });
+
+  const onSubmit = (data: AuthSchemaType) => {
+    loginMutation.mutate(data);
+  };
 
   return (
     <motion.section
@@ -33,10 +46,7 @@ export default function Login() {
       <p className="text-gray-500 text-center font-semibold">
         Enter your credentials to access your workspace.
       </p>
-      <form
-        onSubmit={handleSubmit(() => console.log("Logged in"))}
-        className="space-y-3 my-7"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 my-7">
         <div>
           <InputField
             icon={<MdOutlineMailOutline />}
@@ -58,7 +68,7 @@ export default function Login() {
           type="submit"
           className="flex justify-center items-center gap-3 text-white bg-violet-500 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300"
         >
-          Create account <FiArrowRight />
+          Sign in <FiArrowRight />
         </button>
         <div className="flex items-center w-full gap-3 my-6">
           <div className="flex-1 h-px bg-gray-300"></div>

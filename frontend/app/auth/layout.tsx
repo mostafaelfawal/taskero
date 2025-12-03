@@ -1,3 +1,4 @@
+import ToggleThemeButton from "@/components/ToggleThemeButton";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
@@ -14,7 +15,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <h1 className="text-xl">Taskero</h1>
         </Link>
         {children}
-        <div className="text-center md:text-left text-xs text-gray-600">
+        <div className="text-center lg:text-left text-xs text-gray-600">
           © 2025 Taskero . All rights reserved.
         </div>
       </div>

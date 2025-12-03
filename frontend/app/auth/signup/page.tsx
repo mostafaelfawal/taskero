@@ -11,6 +11,9 @@ import { useForm } from "react-hook-form";
 import { authSchema, AuthSchemaType } from "@/features/auth/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/features/auth/components/ErrorText";
+import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import handleSignup from "@/features/auth/utils/handleSignup";
 
 export default function Signup() {
   const {
@@ -20,6 +23,16 @@ export default function Signup() {
   } = useForm<AuthSchemaType>({
     resolver: zodResolver(authSchema),
   });
+
+  const signupMutation = useMutation({
+    mutationFn: handleSignup,
+    onSuccess: (data) => toast.success(data.message),
+    onError: (error) => toast.error(error.message),
+  });
+
+  const onSubmit = (data: AuthSchemaType) => {
+    signupMutation.mutate(data);
+  };
 
   return (
     <motion.section
@@ -33,10 +46,7 @@ export default function Signup() {
       <p className="text-gray-500 text-center font-semibold">
         join taskero to start organizing your team.
       </p>
-      <form
-        onSubmit={handleSubmit(() => console.log("Hello world"))}
-        className="space-y-3 my-7"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 my-7">
         <div>
           <InputField
             icon={<FiUser />}
