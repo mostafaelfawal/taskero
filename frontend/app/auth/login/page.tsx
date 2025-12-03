@@ -1,54 +1,58 @@
+"use client";
+
+import InputField from "@/features/auth/components/InputField";
+import PasswordField from "@/features/auth/components/PasswordField";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { BsGoogle } from "react-icons/bs";
-import { CiLock } from "react-icons/ci";
 import { FiArrowRight } from "react-icons/fi";
 import { MdOutlineMailOutline } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { authSchema, AuthSchemaType } from "@/features/auth/schemas/authSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorText from "@/features/auth/components/ErrorText";
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AuthSchemaType>({
+    resolver: zodResolver(authSchema),
+  });
+
   return (
-    <section className="flex flex-col justify-center w-full max-w-md mx-auto">
+    <motion.section
+      initial={{ y: 50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className="flex flex-col justify-center w-full max-w-md mx-auto"
+    >
       <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 font-display mb-2">
         Welcome back
       </h2>
       <p className="text-gray-500 text-center font-semibold">
         Enter your credentials to access your workspace.
       </p>
-      <form className="space-y-3 my-7">
+      <form
+        onSubmit={handleSubmit(() => console.log("Logged in"))}
+        className="space-y-3 my-7"
+      >
         <div>
-          <label htmlFor="email" className="font-semibold ">
-            Email
-          </label>
-          <div className="relative mt-1">
-            <input
-              type="email"
-              id="email"
-              placeholder="name@example.com"
-              className="focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-shadow placeholder-gray-500 w-full rounded-xl border border-gray-200 shadow pl-10 py-2"
-            />
-            <MdOutlineMailOutline className="absolute top-3 left-3 text-gray-500" />
-          </div>
+          <InputField
+            icon={<MdOutlineMailOutline />}
+            id="email"
+            label="Email"
+            placeholder="name@example.com"
+            type="email"
+            register={register("email")}
+          />
+          {errors.email && <ErrorText errorMessage={errors.email?.message!} />}
         </div>
         <div>
-          <div className="flex justify-between">
-            <label htmlFor="password" className="font-semibold ">
-              Password
-            </label>
-            <button
-              type="button"
-              className="text-sm text-violet-500 hover:underline"
-            >
-              Forget password?
-            </button>
-          </div>
-          <div className="relative mt-1">
-            <input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              className="focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-shadow placeholder-gray-500 w-full rounded-xl border border-gray-200 shadow pl-10 py-2"
-            />
-            <CiLock className="absolute top-3 left-3 text-gray-500" />
-          </div>
+          <PasswordField register={register("password")} />
+          {errors.password && (
+            <ErrorText errorMessage={errors.password?.message!} />
+          )}
         </div>
         <button
           type="submit"
@@ -78,6 +82,6 @@ export default function Login() {
           </Link>
         </p>
       </form>
-    </section>
+    </motion.section>
   );
 }
