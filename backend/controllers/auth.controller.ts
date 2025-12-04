@@ -50,12 +50,10 @@ export const login = async (req: Request, res: Response) => {
   // compare password 🔐
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    return res
-      .status(400)
-      .json({
-        message:
-          "❌ Incorrect password. Please try again or reset your password.",
-      });
+    return res.status(400).json({
+      message:
+        "❌ Incorrect password. Please try again or reset your password.",
+    });
   }
 
   // Login and save Cookie 🍪

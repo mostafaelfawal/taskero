@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
       );
       return res.data;
     } catch (error: any) {
-      thunkAPI.rejectWithValue(
+      return thunkAPI.rejectWithValue(
         error.response.data.message || "An error occurred while logging in"
       );
     }
