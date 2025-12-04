@@ -8,20 +8,22 @@ import { BsGoogle } from "react-icons/bs";
 import { FiArrowRight, FiUser } from "react-icons/fi";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";
-import { authSchema, AuthSchemaType } from "@/features/auth/schemas/authSchema";
+import {
+  authSchema,
+  AuthSchemaType,
+} from "@/store/UserSection/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/features/auth/components/ErrorText";
-import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import handleSignup from "@/features/auth/utils/handleSignup";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { setUserData } from "@/store/userSlice";
-import { AppDispatch } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { signup } from "@/store/UserSection/thunks/signup";
 
 export default function Signup() {
   const router = useRouter();
-  const userDispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector((state: RootState) => state.user.loading);
 
   const {
     register,
@@ -31,18 +33,14 @@ export default function Signup() {
     resolver: zodResolver(authSchema),
   });
 
-  const signupMutation = useMutation({
-    mutationFn: handleSignup,
-    onSuccess: (data) => {
-      toast.success(data.message);
+  const onSubmit = async (data: AuthSchemaType) => {
+    const resultAction = await dispatch(signup(data));
+    if (signup.fulfilled.match(resultAction)) {
+      toast.success(resultAction.payload.message);
       router.replace("/");
-      userDispatch(setUserData(data.userData));
-    },
-    onError: (error) => toast.error(error.message),
-  });
-
-  const onSubmit = (data: AuthSchemaType) => {
-    signupMutation.mutate(data);
+    } else {
+      toast.error(resultAction.payload as string);
+    }
   };
 
   return (
@@ -87,10 +85,10 @@ export default function Signup() {
         </div>
         <button
           type="submit"
-          disabled={signupMutation.isPending}
+          disabled={loading}
           className="flex justify-center items-center gap-3 text-white bg-violet-500 disabled:bg-violet-400 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300"
         >
-          {signupMutation.isPending ? (
+          {loading ? (
             "Creating account..."
           ) : (
             <>
