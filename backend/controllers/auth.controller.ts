@@ -30,7 +30,9 @@ export const signup = async (req: Request, res: Response) => {
   // Create Usre and save Cookie 🍪
   const user = await User.create({ name, email, password: hash });
   sendCookie(user._id, res);
-  return res.status(201).json({ message: "Sign Up Successfully" });
+  return res
+    .status(201)
+    .json({ userData: user, message: "Sign Up Successfully" });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -50,7 +52,9 @@ export const login = async (req: Request, res: Response) => {
   // Login and save Cookie 🍪
   sendCookie(user._id, res);
 
-  res.status(200).json({ message: `👋 Welcome back ${user.name}` });
+  res
+    .status(200)
+    .json({ userData: user, message: `👋 Welcome back ${user.name}` });
 };
 
 export const logout = async (req: Request, res: Response) => {
