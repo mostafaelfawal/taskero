@@ -12,10 +12,17 @@ import { authSchema, AuthSchemaType } from "@/features/auth/schemas/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/features/auth/components/ErrorText";
 import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import handleSignup from "@/features/auth/utils/handleSignup";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUserData } from "@/store/userSlice";
+import { AppDispatch } from "@/store/store";
 
 export default function Signup() {
+  const router = useRouter();
+  const userDispatch = useDispatch<AppDispatch>();
+
   const {
     register,
     handleSubmit,
@@ -26,7 +33,11 @@ export default function Signup() {
 
   const signupMutation = useMutation({
     mutationFn: handleSignup,
-    onSuccess: (data) => toast.success(data.message),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      router.replace("/");
+      userDispatch(setUserData(data.userData));
+    },
     onError: (error) => toast.error(error.message),
   });
 
@@ -76,9 +87,17 @@ export default function Signup() {
         </div>
         <button
           type="submit"
-          className="flex justify-center items-center gap-3 text-white bg-violet-500 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300"
+          disabled={signupMutation.isPending}
+          className="flex justify-center items-center gap-3 text-white bg-violet-500 disabled:bg-violet-400 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300"
         >
-          Create account <FiArrowRight />
+          {signupMutation.isPending ? (
+            "Creating account..."
+          ) : (
+            <>
+              Create account
+              <FiArrowRight />
+            </>
+          )}
         </button>
         <div className="flex items-center w-full gap-3 my-6">
           <div className="flex-1 h-px bg-gray-300"></div>

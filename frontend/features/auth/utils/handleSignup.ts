@@ -11,6 +11,8 @@ export default async function handleSignup(data: AuthSchemaType) {
 
     return res.data;
   } catch (error: any) {
-    throw new Error(error.response.data.message || "Something went wrong");
+    throw new Error(
+      error.response.data.message || "The account has not been created"
+    );
   }
 }

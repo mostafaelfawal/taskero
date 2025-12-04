@@ -8,9 +8,11 @@ export default async function handleLogin(data: AuthSchemaType) {
       data,
       { withCredentials: true }
     );
-    
+
     return res.data;
   } catch (error: any) {
-    throw new Error(error.response.data.message || "Something went wrong");
+    throw new Error(
+      error.response.data.message || "An error occurred while logging in"
+    );
   }
 }

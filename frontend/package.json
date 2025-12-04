@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@reduxjs/toolkit": "^2.11.0",
     "@tanstack/react-query": "^5.90.11",
     "axios": "^1.13.2",
     "framer-motion": "^12.23.25",
@@ -17,8 +18,9 @@
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-hook-form": "^7.67.0",
-    "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^11.0.5",
     "zod": "^4.1.13"
   },
   "devDependencies": {
