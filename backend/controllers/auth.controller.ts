@@ -30,9 +30,10 @@ export const signup = async (req: Request, res: Response) => {
   // Create Usre and save Cookie 🍪
   const user = await User.create({ name, email, password: hash });
   sendCookie(user._id, res);
-  return res
-    .status(201)
-    .json({ userData: user, message: "Sign Up Successfully" });
+  return res.status(201).json({
+    userData: user,
+    message: `🎉 Welcome to Taskero, ${user.name}! Your account has been created successfully. Let's start organizing your team tasks!`,
+  });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -40,24 +41,35 @@ export const login = async (req: Request, res: Response) => {
   // Check user exists 👁
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(400).json({ message: "Invalid email" });
+    return res.status(400).json({
+      message:
+        "❌ No account found with this email. Please check or sign up first.",
+    });
   }
 
   // compare password 🔐
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    return res.status(400).json({ message: "Wrong password" });
+    return res
+      .status(400)
+      .json({
+        message:
+          "❌ Incorrect password. Please try again or reset your password.",
+      });
   }
 
   // Login and save Cookie 🍪
   sendCookie(user._id, res);
 
-  res
-    .status(200)
-    .json({ userData: user, message: `👋 Welcome back ${user.name}` });
+  res.status(200).json({
+    userData: user,
+    message: `👋 Welcome back, ${user.name}! Let's continue managing your team tasks efficiently.`,
+  });
 };
 
 export const logout = async (req: Request, res: Response) => {
   res.clearCookie("token", cookieOptions);
-  res.status(200).json({ message: "👋 Logged out successfully" });
+  res.status(200).json({
+    message: `👋 You have been logged out from Taskero. See you soon!`,
+  });
 };
