@@ -62,7 +62,7 @@ export default function RootLayout({
           <ReduxProvider>{children}</ReduxProvider>
         </QueryProvider>
         <ToastContainer
-          position="top-right"
+          position="bottom-right"
           draggable
           autoClose={3000}
           theme="light"

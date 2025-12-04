@@ -37,7 +37,7 @@ export default function Signup() {
     const resultAction = await dispatch(signup(data));
     if (signup.fulfilled.match(resultAction)) {
       toast.success(resultAction.payload.message);
-      router.replace("/");
+      router.replace(`/profile/${resultAction.payload.userData._id}`);
     } else {
       toast.error(resultAction.payload as string);
     }

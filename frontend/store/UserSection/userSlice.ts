@@ -4,7 +4,7 @@ import { login } from "./thunks/login";
 import { logout } from "./thunks/logout";
 
 interface UserType {
-  id?: string;
+  _id?: string;
   name: string;
   email: string;
   avatar: string;
@@ -14,7 +14,7 @@ interface UserType {
 }
 
 const initialState: UserType = {
-  id: "",
+  _id: "",
   name: "",
   email: "",
   avatar: "",
