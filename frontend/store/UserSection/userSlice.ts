@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { signup } from "./thunks/signup";
 import { login } from "./thunks/login";
 import { logout } from "./thunks/logout";
+import { oauthLogin } from "./thunks/oauthLogin";
 
 interface UserType {
   _id?: string;
@@ -70,6 +71,15 @@ const userSlice = createSlice({
       .addCase(logout.pending, setPending)
       .addCase(logout.fulfilled, (state) => setFulfilled(state, initialState))
       .addCase(logout.rejected, (state, action) =>
+        setRejected(state, action.payload as string)
+      );
+    // Oauth
+    builder
+      .addCase(oauthLogin.pending, setPending)
+      .addCase(oauthLogin.fulfilled, (state) =>
+        setFulfilled(state, initialState)
+      )
+      .addCase(oauthLogin.rejected, (state, action) =>
         setRejected(state, action.payload as string)
       );
   },

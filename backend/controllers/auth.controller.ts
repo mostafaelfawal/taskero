@@ -28,7 +28,12 @@ export const signup = async (req: Request, res: Response) => {
   const hash = await bcrypt.hash(password, 10);
 
   // Create Usre and save Cookie 🍪
-  const user = await User.create({ name, email, password: hash });
+  const user = await User.create({
+    name,
+    email,
+    password: hash,
+    avatar: "/default-avatar.png",
+  });
   sendCookie(user._id, res);
   return res.status(201).json({
     userData: user,
@@ -48,7 +53,7 @@ export const login = async (req: Request, res: Response) => {
   }
 
   // compare password 🔐
-  const match = await bcrypt.compare(password, user.password);
+  const match = await bcrypt.compare(password, user.password!);
   if (!match) {
     return res.status(400).json({
       message:
@@ -69,5 +74,23 @@ export const logout = async (req: Request, res: Response) => {
   res.clearCookie("token", cookieOptions);
   res.status(200).json({
     message: `👋 You have been logged out from Taskero. See you soon!`,
+  });
+};
+
+export const oauthSignin = async (req: Request, res: Response) => {
+  const { name, email, avatar } = req.body;
+  const user = await User.findOne({ email });
+  if (user) {
+    sendCookie(user._id, res);
+    return res.status(200).json({
+      userData: user,
+      message: `👋 Welcome back, ${user.name}! Let's continue managing your team tasks efficiently.`,
+    });
+  }
+  const createdUser = await User.create({ name, email, avatar });
+  sendCookie(createdUser._id, res);
+  return res.status(201).json({
+    userData: createdUser,
+    message: `🎉 Welcome to Taskero, ${createdUser.name}! Your account has been created successfully. Let's start organizing your team tasks!`,
   });
 };

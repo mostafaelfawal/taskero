@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { login } from "@/store/UserSection/thunks/login";
+import GoogleButton from "@/features/auth/components/GoogleButton";
 
 export default function Login() {
   const router = useRouter();
@@ -96,12 +97,7 @@ export default function Login() {
 
           <div className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></div>
         </div>
-        <button
-          type="button"
-          className="flex justify-center items-center gap-2 border border-gray-200 dark:border-slate-700 dark:bg-slate-700 dark:text-white font-semibold rounded-lg w-full py-2.5 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shadow-md"
-        >
-          <BsGoogle /> Google
-        </button>
+        <GoogleButton />
         <p className="text-center dark:text-white">
           Don't have an account?{" "}
           <Link
