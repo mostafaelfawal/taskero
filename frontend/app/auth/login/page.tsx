@@ -49,10 +49,10 @@ export default function Login() {
       animate={{ y: 0, opacity: 1 }}
       className="flex flex-col justify-center w-full max-w-md mx-auto"
     >
-      <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 font-display mb-2">
+      <h2 className="text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white font-display mb-2">
         Welcome back
       </h2>
-      <p className="text-gray-500 text-center font-semibold">
+      <p className="text-gray-500 dark:text-slate-400 text-center font-semibold">
         Enter your credentials to access your workspace.
       </p>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 my-7">
@@ -68,7 +68,7 @@ export default function Login() {
           {errors.email && <ErrorText errorMessage={errors.email?.message!} />}
         </div>
         <div>
-          <PasswordField register={register("password")} />
+          <PasswordField showForgetPassword register={register("password")} />
           {errors.password && (
             <ErrorText errorMessage={errors.password?.message!} />
           )}
@@ -76,7 +76,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={loading}
-          className="flex justify-center items-center gap-3 text-white bg-violet-500 disabled:bg-violet-400 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300"
+          className="flex justify-center items-center gap-3 text-white bg-violet-500 disabled:bg-violet-400 font-semibold rounded-lg w-full py-2.5 hover:bg-violet-400 hover:scale-102 transition-all shadow-md shadow-violet-300 dark:shadow-none"
         >
           {loading ? (
             "Logging in..."
@@ -88,23 +88,26 @@ export default function Login() {
           )}
         </button>
         <div className="flex items-center w-full gap-3 my-6">
-          <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></div>
 
-          <p className="text-sm text-gray-500 whitespace-nowrap">
+          <p className="text-sm text-gray-500 dark:text-slate-400 whitespace-nowrap">
             OR CONTINUE WITH
           </p>
 
-          <div className="flex-1 h-px bg-gray-300"></div>
+          <div className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></div>
         </div>
         <button
           type="button"
-          className="flex justify-center items-center gap-2 border border-gray-200 font-semibold rounded-lg w-full py-2.5 hover:bg-gray-100 transition-colors shadow-md"
+          className="flex justify-center items-center gap-2 border border-gray-200 dark:border-slate-700 dark:bg-slate-700 dark:text-white font-semibold rounded-lg w-full py-2.5 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors shadow-md"
         >
           <BsGoogle /> Google
         </button>
-        <p className="text-center">
+        <p className="text-center dark:text-white">
           Don't have an account?{" "}
-          <Link href="/auth/signup" className="text-violet-500 hover:underline">
+          <Link
+            href="/auth/signup"
+            className="text-violet-500 dark:text-violet-300 hover:underline"
+          >
             Sign up
           </Link>
         </p>
