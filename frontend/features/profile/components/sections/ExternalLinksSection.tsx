@@ -14,7 +14,7 @@ export default function ExternalLinksSection() {
       </div>
       <form>
         <div className="p-6 pt-0 grid gap-2 grid-cols-1 md:grid-cols-2">
-          <div className="flex flex-col w-full">
+          <div className="space-y-1 flex flex-col w-full">
             <label htmlFor="github" className="dark:text-slate-200">
               GitHub Profile
             </label>
@@ -29,7 +29,7 @@ export default function ExternalLinksSection() {
             </div>
           </div>
 
-          <div className="flex flex-col w-full">
+          <div className="space-y-1 flex flex-col w-full">
             <label htmlFor="linkedIn" className="dark:text-slate-200">
               LinkedIn Profile
             </label>
@@ -43,8 +43,7 @@ export default function ExternalLinksSection() {
               <FiLinkedin className="absolute top-2 left-2 text-slate-500 dark:text-slate-400" />
             </div>
           </div>
-
-          <div className="md:col-span-2 flex flex-col w-full">
+          <div className="space-y-1 md:col-span-2 flex flex-col w-full">
             <label htmlFor="portfolio" className="dark:text-slate-200">
               Portfolio Website
             </label>

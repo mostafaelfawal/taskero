@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
-import { Bounce, ToastContainer } from "react-toastify";
 import ReduxProvider from "@/providers/ReduxProvider";
+import ToastProvider from "@/providers/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,15 +59,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} bg-gray-50 dark:bg-gray-700 transition-colors antialiased`}
       >
         <QueryProvider>
-          <ReduxProvider>{children}</ReduxProvider>
+          <ReduxProvider>
+            {children}
+            <ToastProvider />
+          </ReduxProvider>
         </QueryProvider>
-        <ToastContainer
-          position="bottom-right"
-          draggable
-          autoClose={3000}
-          theme="light"
-          transition={Bounce}
-        />
       </body>
     </html>
   );
