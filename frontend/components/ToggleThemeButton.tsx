@@ -21,7 +21,7 @@ export default function ToggleThemeButton() {
   return (
     <div className="flex gap-2 items-center">
       <FiSun className={isDark ? "text-slate-500" : "text-orange-500"} />
-      <ToggleButton onClick={toggleTheme} />
+      <ToggleButton isOn={isDark} toggleFn={toggleTheme} />
       <FiMoon className={isDark ? "text-violet-500" : "text-slate-500"} />
     </div>
   );

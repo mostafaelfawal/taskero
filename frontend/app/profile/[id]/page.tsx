@@ -17,7 +17,7 @@ export default function Profile({
   const { id } = use(params);
 
   return (
-    <div className="min-h-screen space-y-6 bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-6xl mx-auto min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <HeaderSection />
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-4 space-y-6">

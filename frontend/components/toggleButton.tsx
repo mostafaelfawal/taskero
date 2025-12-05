@@ -1,17 +1,15 @@
-import { useState } from "react";
-
-export default function ToggleButton({ onClick }: { onClick: () => void }) {
-  const [isOn, setIsOn] = useState(false);
-  
-  const toggle = () => {
-    onClick();
-    setIsOn(!isOn);
-  };
+export default function ToggleButton({
+  toggleFn,
+  isOn,
+}: {
+  toggleFn: () => void;
+  isOn: boolean;
+}) {
   return (
     <div
-      onClick={toggle}
+      onClick={toggleFn}
       className={`w-10 h-5 rounded-full cursor-pointer transition-colors flex items-center px-1
-        ${isOn ? "bg-violet-500" : "bg-gray-300"}
+        ${isOn ? "bg-violet-500" : "bg-gray-300 dark:bg-gray-600"}
       `}
     >
       <span

@@ -5,10 +5,10 @@ import { toast } from "react-toastify";
 
 export default function PreferencesSection() {
   return (
-    <section className="p-6 bg-white rounded-xl shadow">
+    <section className="p-6 bg-white dark:bg-slate-800 rounded-xl shadow dark:shadow-lg">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold">Preferences</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-lg font-semibold dark:text-white">Preferences</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           Manage your interface settings and visibility.
         </p>
       </div>
@@ -20,14 +20,15 @@ export default function PreferencesSection() {
           control={<ToggleThemeButton />}
         />
 
-        <div className="h-px bg-slate-200 my-3" />
+        <div className="h-px bg-slate-200 dark:bg-slate-700 my-3" />
 
         <SettingsToggleRow
           title="Email Notifications"
           desc="Receive daily summaries of your tasks"
           control={
             <ToggleButton
-              onClick={() => toast.info("Email notifications toggled")}
+              isOn={false}
+              toggleFn={() => toast.info("Email notifications toggled")}
             />
           }
         />
