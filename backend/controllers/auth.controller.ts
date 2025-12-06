@@ -153,6 +153,13 @@ export const updateUserData = async (req: Request, res: Response) => {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
+      // OAuth Google Account
+      if (!user.password) {
+        return res.status(400).json({
+          message:
+            "Your account is registered with Google; you cannot change your password.",
+        });
+      }
 
       const match = await bcrypt.compare(currentPassword, user.password!);
       if (!match) {

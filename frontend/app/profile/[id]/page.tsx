@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { use, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 
 export default function Profile({
   params,
@@ -35,7 +36,12 @@ export default function Profile({
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: .5 }}
+      className="max-w-6xl mx-auto min-h-screen py-8 px-4 sm:px-6 lg:px-8"
+    >
       <HeaderSection />
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-4 space-y-6">
@@ -49,6 +55,6 @@ export default function Profile({
           <DangerZoneSection />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

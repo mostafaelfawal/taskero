@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserType } from "@/types/UserType";
+import { PasswordSchemaType } from "@/features/profile/schemas/passwordSchema";
 
 export const updateUser = createAsyncThunk(
   "user/update-user",
-  async (data: UserType, thunkAPI) => {
+  async (data: Partial<PasswordSchemaType> & UserType, thunkAPI) => {
     try {
       const res = await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/`,

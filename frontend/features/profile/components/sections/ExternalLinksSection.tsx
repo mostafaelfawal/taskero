@@ -30,7 +30,7 @@ export default function ExternalLinksSection() {
       if (updateUser.fulfilled.match(updatedUser)) {
         toast.success("Your external links have been updated");
       } else {
-        toast.error(updatedUser.error.message);
+        toast.error(updatedUser.payload as string);
       }
     }
   };
