@@ -4,6 +4,7 @@ import { login } from "./thunks/login";
 import { logout } from "./thunks/logout";
 import { oauthLogin } from "./thunks/oauthLogin";
 import { getUserData } from "./thunks/getUserData";
+import { deleteUser } from "./thunks/deleteUser";
 
 interface UserType {
   _id?: string;
@@ -99,6 +100,16 @@ const userSlice = createSlice({
         setFulfilled(state, action.payload.userData)
       )
       .addCase(getUserData.rejected, (state, action) =>
+        setRejected(state, action.payload as string)
+      );
+
+    // DeleteAccount
+    builder
+      .addCase(deleteUser.pending, setPending)
+      .addCase(deleteUser.fulfilled, (state) =>
+        setFulfilled(state, initialState)
+      )
+      .addCase(deleteUser.rejected, (state, action) =>
         setRejected(state, action.payload as string)
       );
   },

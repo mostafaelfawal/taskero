@@ -2,7 +2,7 @@ export default function ToggleButton({
   toggleFn,
   isOn,
 }: {
-  toggleFn: () => void;
+  toggleFn: VoidFunction;
   isOn: boolean;
 }) {
   return (
