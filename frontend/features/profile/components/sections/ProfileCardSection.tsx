@@ -1,10 +1,11 @@
 import Image from "next/image";
 import { BiCalendarAlt, BiCamera } from "react-icons/bi";
-import { MdOutlineEmail } from "react-icons/md";
+import { MdLanguage, MdOutlineEmail } from "react-icons/md";
 import InfoRow from "../InfoRow";
 import { GoShieldLock } from "react-icons/go";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { FiGithub, FiLinkedin } from "react-icons/fi";
 
 export default function ProfileCardSection() {
   const user = useSelector((state: RootState) => state.user);
@@ -43,9 +44,62 @@ export default function ProfileCardSection() {
       <div className="p-6 pt-14">
         <h2 className="text-xl dark:text-white font-bold">{user.name}</h2>
 
-        <p className="mb-3 inline-flex items-center gap-1 text-slate-500 dark:text-slate-400">
+        <p className=" inline-flex items-center gap-1 text-slate-500 dark:text-slate-400">
           <MdOutlineEmail /> {user.email}
         </p>
+
+        <div className="mb-4 flex gap-3 mt-2">
+          {user.linkedInProfile && (
+            <a
+              href={user.linkedInProfile}
+              target="_blank"
+              className="w-9 h-9 flex items-center justify-center rounded-xl 
+                 bg-white dark:bg-slate-700 
+                 border border-gray-200 dark:border-slate-600
+                 dark:text-slate-400
+                 shadow-sm hover:shadow-md 
+                 hover:bg-violet-600 hover:text-white 
+                 hover:border-transparent
+                 transition-all duration-200"
+            >
+              <FiLinkedin size={18} />
+            </a>
+          )}
+
+          {user.gitHubProfile && (
+            <a
+              href={user.gitHubProfile}
+              target="_blank"
+              className="w-9 h-9 flex items-center justify-center rounded-xl 
+                 bg-white dark:bg-slate-700 
+                 border border-gray-200 dark:border-slate-600
+                 dark:text-slate-400
+                 shadow-sm hover:shadow-md 
+                 hover:bg-violet-600 hover:text-white 
+                 hover:border-transparent
+                 transition-all duration-200"
+            >
+              <FiGithub size={18} />
+            </a>
+          )}
+
+          {user.portfolioWebsite && (
+            <a
+              href={user.portfolioWebsite}
+              target="_blank"
+              className="w-9 h-9 flex items-center justify-center rounded-xl 
+                 bg-white dark:bg-slate-700 
+                 border border-gray-200 dark:border-slate-600
+                 dark:text-slate-400
+                 shadow-sm hover:shadow-md 
+                 hover:bg-violet-600 hover:text-white 
+                 hover:border-transparent
+                 transition-all duration-200"
+            >
+              <MdLanguage size={18} />
+            </a>
+          )}
+        </div>
 
         <InfoRow
           icon={<BiCalendarAlt />}
