@@ -3,13 +3,18 @@ import { signup } from "./thunks/signup";
 import { login } from "./thunks/login";
 import { logout } from "./thunks/logout";
 import { oauthLogin } from "./thunks/oauthLogin";
+import { getUserData } from "./thunks/getUserData";
 
 interface UserType {
   _id?: string;
   name: string;
   email: string;
   avatar: string;
-  role: "user" | "admin" | "member";
+  tasksCreated: number;
+  tasksCompleted: number;
+  workspaces: number;
+  createdAt: string | null;
+  updatedAt: string | null;
   loading: boolean;
   error?: string;
 }
@@ -19,12 +24,15 @@ const initialState: UserType = {
   name: "",
   email: "",
   avatar: "",
-  role: "user",
+  tasksCreated: 0,
+  tasksCompleted: 0,
+  workspaces: 0,
+  createdAt: null,
+  updatedAt: null,
   loading: false,
   error: undefined,
 };
 
-// دوال مساعدة لتقليل التكرار
 const setPending = (state: UserType) => {
   state.loading = true;
   state.error = undefined;
@@ -73,6 +81,7 @@ const userSlice = createSlice({
       .addCase(logout.rejected, (state, action) =>
         setRejected(state, action.payload as string)
       );
+
     // Oauth
     builder
       .addCase(oauthLogin.pending, setPending)
@@ -80,6 +89,16 @@ const userSlice = createSlice({
         setFulfilled(state, initialState)
       )
       .addCase(oauthLogin.rejected, (state, action) =>
+        setRejected(state, action.payload as string)
+      );
+
+    // GetUserData
+    builder
+      .addCase(getUserData.pending, setPending)
+      .addCase(getUserData.fulfilled, (state, action) =>
+        setFulfilled(state, action.payload.userData)
+      )
+      .addCase(getUserData.rejected, (state, action) =>
         setRejected(state, action.payload as string)
       );
   },

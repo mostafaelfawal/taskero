@@ -1,7 +1,19 @@
+import { FormEvent, useState } from "react";
 import { FiGithub, FiLinkedin, FiSave } from "react-icons/fi";
 import { MdLanguage } from "react-icons/md";
 
 export default function ExternalLinksSection() {
+  const [url, setUrl] = useState({
+    gitHubProfile: "",
+    linkedInProfile: "",
+    portfolioWebsite: "",
+  });
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(url);
+  };
+
   return (
     <section className="bg-white dark:bg-slate-800 rounded-xl shadow dark:shadow-lg overflow-hidden">
       <div className="p-6">
@@ -12,7 +24,7 @@ export default function ExternalLinksSection() {
           Connect your professional profiles.
         </p>
       </div>
-      <form>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div className="p-6 pt-0 grid gap-2 grid-cols-1 md:grid-cols-2">
           <div className="space-y-1 flex flex-col w-full">
             <label htmlFor="github" className="dark:text-slate-200">
@@ -21,7 +33,11 @@ export default function ExternalLinksSection() {
             <div className="relative">
               <input
                 id="github"
-                type="text"
+                type="url"
+                value={url.gitHubProfile}
+                onChange={(e) =>
+                  setUrl({ ...url, gitHubProfile: e.target.value })
+                }
                 placeholder="enter your github profile..."
                 className="w-full border border-gray-200 dark:border-slate-700 dark:bg-slate-700 dark:text-white shadow rounded-md pl-7 py-1 px-2 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-shadow dark:placeholder-slate-400"
               />
@@ -36,7 +52,11 @@ export default function ExternalLinksSection() {
             <div className="relative">
               <input
                 id="linkedIn"
-                type="text"
+                type="url"
+                value={url.linkedInProfile}
+                onChange={(e) =>
+                  setUrl({ ...url, linkedInProfile: e.target.value })
+                }
                 placeholder="enter your linkedIn profile..."
                 className="w-full border border-gray-200 dark:border-slate-700 dark:bg-slate-700 dark:text-white shadow rounded-md pl-7 py-1 px-2 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-shadow dark:placeholder-slate-400"
               />
@@ -50,7 +70,11 @@ export default function ExternalLinksSection() {
             <div className="relative">
               <input
                 id="portfolio"
-                type="text"
+                type="url"
+                value={url.portfolioWebsite}
+                onChange={(e) =>
+                  setUrl({ ...url, portfolioWebsite: e.target.value })
+                }
                 placeholder="enter your portfolio URL..."
                 className="w-full border border-gray-200 dark:border-slate-700 dark:bg-slate-700 dark:text-white shadow rounded-md pl-7 py-1 px-2 focus:outline-none focus:ring-1 focus:ring-violet-500 transition-shadow dark:placeholder-slate-400"
               />

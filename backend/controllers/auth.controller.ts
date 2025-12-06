@@ -94,3 +94,11 @@ export const oauthSignin = async (req: Request, res: Response) => {
     message: `🎉 Welcome to Taskero, ${createdUser.name}! Your account has been created successfully. Let's start organizing your team tasks!`,
   });
 };
+
+export const getUserData = async (req: Request, res: Response) => {
+  const user = await User.findById(req.query.id);
+  if (user) {
+    return res.status(200).json({ userData: user });
+  }
+  return res.status(404).json({ message: "User not found" });
+};

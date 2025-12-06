@@ -7,7 +7,12 @@ import PreferencesSection from "@/features/profile/components/sections/Preferenc
 import ProfileCardSection from "@/features/profile/components/sections/ProfileCardSection";
 import QuickActionsSection from "@/features/profile/components/sections/QuickActionsSection";
 import StatsSection from "@/features/profile/components/sections/StatsSection";
-import { use } from "react";
+import { AppDispatch } from "@/store/store";
+import { getUserData } from "@/store/UserSection/thunks/getUserData";
+import { useRouter } from "next/navigation";
+import { use, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function Profile({
   params,
@@ -15,6 +20,19 @@ export default function Profile({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userData = await dispatch(getUserData(id));
+      if (!getUserData.fulfilled.match(userData)) {
+        toast.error(userData.payload as string);
+        router.replace("/auth/login");
+      }
+    };
+    getUser();
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto min-h-screen py-8 px-4 sm:px-6 lg:px-8">
