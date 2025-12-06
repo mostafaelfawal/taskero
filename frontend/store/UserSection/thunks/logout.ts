@@ -3,9 +3,8 @@ import axios from "axios";
 
 export const logout = createAsyncThunk("user/logout", async (_, thunkAPI) => {
   try {
-    const res = await axios.post(
+    const res = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/auth/logout`,
-      {},
       { withCredentials: true }
     );
     return res.data;

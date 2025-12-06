@@ -5,20 +5,8 @@ import { logout } from "./thunks/logout";
 import { oauthLogin } from "./thunks/oauthLogin";
 import { getUserData } from "./thunks/getUserData";
 import { deleteUser } from "./thunks/deleteUser";
-
-interface UserType {
-  _id?: string;
-  name: string;
-  email: string;
-  avatar: string;
-  tasksCreated: number;
-  tasksCompleted: number;
-  workspaces: number;
-  createdAt: string | null;
-  updatedAt: string | null;
-  loading: boolean;
-  error?: string;
-}
+import { updateUser } from "./thunks/updateUser";
+import { UserType } from "@/types/UserType";
 
 const initialState: UserType = {
   _id: "",
@@ -28,6 +16,9 @@ const initialState: UserType = {
   tasksCreated: 0,
   tasksCompleted: 0,
   workspaces: 0,
+  gitHubProfile: "",
+  linkedInProfile: "",
+  portfolioWebsite: "",
   createdAt: null,
   updatedAt: null,
   loading: false,
@@ -110,6 +101,16 @@ const userSlice = createSlice({
         setFulfilled(state, initialState)
       )
       .addCase(deleteUser.rejected, (state, action) =>
+        setRejected(state, action.payload as string)
+      );
+
+    // Update User Data
+    builder
+      .addCase(updateUser.pending, setPending)
+      .addCase(updateUser.fulfilled, (state, action) =>
+        setFulfilled(state, action.payload.userData)
+      )
+      .addCase(updateUser.rejected, (state, action) =>
         setRejected(state, action.payload as string)
       );
   },

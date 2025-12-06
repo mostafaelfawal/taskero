@@ -1,17 +1,38 @@
-import { FormEvent, useState } from "react";
+import { AppDispatch, RootState } from "@/store/store";
+import { updateUser } from "@/store/UserSection/thunks/updateUser";
+import { FormEvent, useEffect, useState } from "react";
 import { FiGithub, FiLinkedin, FiSave } from "react-icons/fi";
 import { MdLanguage } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export default function ExternalLinksSection() {
+  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
   const [url, setUrl] = useState({
     gitHubProfile: "",
     linkedInProfile: "",
     portfolioWebsite: "",
   });
+  // Set URLs after rendering
+  useEffect(() => {
+    setUrl({
+      gitHubProfile: user.gitHubProfile || "",
+      linkedInProfile: user.linkedInProfile || "",
+      portfolioWebsite: user.portfolioWebsite || "",
+    });
+  }, [user]);
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(url);
+    if (user._id) {
+      const updatedUser = await dispatch(updateUser({ ...user, ...url }));
+      if (updateUser.fulfilled.match(updatedUser)) {
+        toast.success("Your external links have been updated");
+      } else {
+        toast.error(updatedUser.error.message);
+      }
+    }
   };
 
   return (
@@ -34,7 +55,7 @@ export default function ExternalLinksSection() {
               <input
                 id="github"
                 type="url"
-                value={url.gitHubProfile}
+                value={url.gitHubProfile!}
                 onChange={(e) =>
                   setUrl({ ...url, gitHubProfile: e.target.value })
                 }
@@ -53,7 +74,7 @@ export default function ExternalLinksSection() {
               <input
                 id="linkedIn"
                 type="url"
-                value={url.linkedInProfile}
+                value={url.linkedInProfile!}
                 onChange={(e) =>
                   setUrl({ ...url, linkedInProfile: e.target.value })
                 }
@@ -71,7 +92,7 @@ export default function ExternalLinksSection() {
               <input
                 id="portfolio"
                 type="url"
-                value={url.portfolioWebsite}
+                value={url.portfolioWebsite!}
                 onChange={(e) =>
                   setUrl({ ...url, portfolioWebsite: e.target.value })
                 }
@@ -86,10 +107,17 @@ export default function ExternalLinksSection() {
         <div className="flex justify-end border-t border-t-gray-200 dark:border-t-slate-600 bg-gray-50 dark:bg-slate-700 mt-4 p-5">
           <button
             type="submit"
+            disabled={user.loading}
             className="inline-flex items-center justify-center gap-2 rounded-md text-sm transition-colors disabled:opacity-50 font-semibold px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white"
           >
-            <FiSave />
-            Save Changes
+            {user.loading ? (
+              "Saving..."
+            ) : (
+              <>
+                <FiSave />
+                Save Changes
+              </>
+            )}
           </button>
         </div>
       </form>
