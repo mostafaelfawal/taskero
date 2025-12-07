@@ -1,6 +1,6 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/features/taskero/components/Sidebar";
 import ToggleThemeButton from "@/components/ToggleThemeButton";
 import { RootState } from "@/store/store";
 import Image from "next/image";
@@ -15,7 +15,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     <>
       <div className="flex">
         <Sidebar />
-        <div className="w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <div className="w-full text-gray-900 dark:text-gray-100">
           <header className="sticky top-0 backdrop-blur px-6 h-16 flex items-center border-b border-b-gray-300 dark:border-b-slate-700 w-full bg-white/80 dark:bg-gray-900/80">
             <div className="flex justify-between w-full">
               <div className="relative w-md">
