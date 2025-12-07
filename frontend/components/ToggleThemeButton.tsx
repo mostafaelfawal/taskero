@@ -1,7 +1,6 @@
 "use client";
 
 import { FiMoon, FiSun } from "react-icons/fi";
-import ToggleButton from "./toggleButton";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { setTheme, toggleTheme } from "@/store/themeSlice";
@@ -25,14 +24,12 @@ export default function ToggleThemeButton() {
   }
 
   return (
-    <div className="flex gap-2 items-center">
-      <FiSun
-        className={theme === "dark" ? "text-slate-500" : "text-orange-500"}
-      />
-      <ToggleButton isOn={theme === "dark"} toggleFn={handleToggleTheme} />
-      <FiMoon
-        className={theme === "dark" ? "text-violet-500" : "text-slate-500"}
-      />
-    </div>
+    <button onClick={handleToggleTheme} className="text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-500 transition-colors w-9 h-9 flex justify-center items-center">
+      {theme === "dark" ? (
+        <FiSun />
+      ) : (
+        <FiMoon />
+      )}
+    </button>
   );
 }

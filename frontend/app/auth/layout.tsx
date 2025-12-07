@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <p className="h-8 w-8 bg-violet-500 rounded-lg flex items-center justify-center shadow-lg shadow-violet-500/20 text-xl text-white">
             T
           </p>
-          <h1 className="text-xl dark:text-white">Taskero</h1>
+          <h1 className="text-xl text-violet-500">Taskero</h1>
         </Link>
         {children}
         <div className="text-center lg:text-left text-xs text-gray-600 dark:text-slate-400">
