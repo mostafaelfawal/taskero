@@ -3,11 +3,11 @@ import axios from "axios";
 
 export const getUserData = createAsyncThunk(
   "user/getUserData",
-  async (id: string, thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user-data`,
-        { withCredentials: true, params: { id } }
+        { withCredentials: true }
       );
       return res.data;
     } catch (error: any) {

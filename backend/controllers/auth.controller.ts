@@ -8,16 +8,16 @@ import generateToken from "../utils/generateToken";
 // ===============================
 const cookieOptions: CookieOptions = {
   httpOnly: true,
-  secure: false, // true in production with HTTPS
-  sameSite: "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
+  secure: true, // مهم جداً
+  sameSite: "none", // أهم نقطة!!!
+  maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/",
 };
 
 // ===============================
 // Helper – Send JWT Cookie
 // ===============================
-function sendCookie(userId: object, res: Response) {
+function sendCookie(userId: string, res: Response) {
   const token = generateToken(userId);
   res.cookie("token", token, cookieOptions);
 }
@@ -43,7 +43,7 @@ export const signup = async (req: Request, res: Response) => {
       avatar: "/default-avatar.png",
     });
 
-    sendCookie(user._id, res);
+    sendCookie(user._id.toString(), res);
 
     return res.status(201).json({
       userData: user,
@@ -75,7 +75,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
 
-    sendCookie(user._id, res);
+    sendCookie(user._id.toString(), res);
 
     return res.status(200).json({
       userData: user,
@@ -107,7 +107,7 @@ export const oauthSignin = async (req: Request, res: Response) => {
 
     if (!user) {
       user = await User.create({ name, email, avatar });
-      sendCookie(user._id, res);
+      sendCookie(user._id.toString(), res);
 
       return res.status(201).json({
         userData: user,
@@ -115,7 +115,7 @@ export const oauthSignin = async (req: Request, res: Response) => {
       });
     }
 
-    sendCookie(user._id, res);
+    sendCookie(user._id.toString(), res);
 
     return res.status(200).json({
       userData: user,
@@ -131,7 +131,7 @@ export const oauthSignin = async (req: Request, res: Response) => {
 // ===============================
 export const getUserData = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.query.id);
+    const user = await User.findById((req as any).user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     return res.status(200).json({ userData: user });
@@ -149,7 +149,7 @@ export const updateUserData = async (req: Request, res: Response) => {
 
     // Password update
     if (currentPassword && newPassword) {
-      const user = await User.findById(req.query.id);
+      const user = await User.findById((req as any).user.id);
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -172,7 +172,7 @@ export const updateUserData = async (req: Request, res: Response) => {
     }
 
     // Update other fields
-    const user = await User.findByIdAndUpdate(req.query.id, rest, {
+    const user = await User.findByIdAndUpdate((req as any).user.id, rest, {
       new: true,
     });
 
@@ -189,7 +189,7 @@ export const updateUserData = async (req: Request, res: Response) => {
 // ===============================
 export const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const user = await User.findByIdAndDelete(req.query.id);
+    const user = await User.findByIdAndDelete((req as any).user.id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
     return res.status(200).json({

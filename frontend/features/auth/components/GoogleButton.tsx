@@ -31,7 +31,7 @@ export default function GoogleButton() {
 
       if (oauthLogin.fulfilled.match(resultAction)) {
         toast.success(resultAction.payload.message);
-        router.replace(`/profile/${resultAction.payload.userData._id}`);
+        router.replace("/taskero/dashboard");
       } else {
         const errorMsg = resultAction.payload as string;
         toast.error(errorMsg);

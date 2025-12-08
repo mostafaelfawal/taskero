@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { UserType } from "@/types/UserType";
-import { PasswordSchemaType } from "@/features/profile/schemas/passwordSchema";
+import { PasswordSchemaType } from "@/features/taskero/profile/schemas/passwordSchema";
 
 export const updateUser = createAsyncThunk(
   "user/update-user",

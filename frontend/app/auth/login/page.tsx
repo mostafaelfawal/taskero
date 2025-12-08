@@ -38,7 +38,7 @@ export default function Login() {
     const resultAction = await dispatch(login(data));
     if (login.fulfilled.match(resultAction)) {
       toast.success(resultAction.payload.message);
-      router.replace(`/profile/${resultAction.payload.userData._id}`);
+      router.replace("/taskero/dashboard");
     } else {
       toast.error(resultAction.payload as string);
     }

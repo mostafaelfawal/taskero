@@ -11,24 +11,47 @@ import Link from "next/link";
 import { FiArrowRight, FiPlus, FiUsers } from "react-icons/fi";
 import { LuFolderKanban } from "react-icons/lu";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 export default function Dashboard() {
   const userName = useSelector((state: RootState) => state.user.name);
+  const firstName = useMemo(() => userName.split(" ")[0] || "User", [userName]);
 
   const workspaces: any[] = [
-    { title: "Product Design", lastActive: "2h", members: 12, projects: 8 },
-    { title: "Marketing Team", lastActive: "1d", members: 5, projects: 3 },
-    { title: "Engineering", lastActive: "4h", members: 24, projects: 15 },
+    {
+      id: 9,
+      title: "Product Design",
+      lastActive: "2h",
+      members: 12,
+      projects: 8,
+    },
+    {
+      id: 10,
+      title: "Marketing Team",
+      lastActive: "1d",
+      members: 5,
+      projects: 3,
+    },
+    {
+      id: 11,
+      title: "Engineering",
+      lastActive: "4h",
+      members: 24,
+      projects: 15,
+    },
   ];
 
   const adminProjects: any[] = [
     {
+      id: 1,
       title: "Website Redesign",
       remainingTask: 34,
       progressed: 75,
       state: "On Track",
     },
     {
+      id: 2,
       title: "Mobile App Q2",
       remainingTask: 12,
       progressed: 30,
@@ -37,13 +60,14 @@ export default function Dashboard() {
   ];
 
   const userProjects: any[] = [
-    { title: "Q3 Marketing Campaign", tasks: 8, progressed: 90 },
-    { title: "Internal Tools", tasks: 45, progressed: 50 },
-    { title: "Customer Feedback", tasks: 12, progressed: 15 },
+    { id: 3, title: "Q3 Marketing Campaign", tasks: 8, progressed: 90 },
+    { id: 4, title: "Internal Tools", tasks: 45, progressed: 50 },
+    { id: 5, title: "Customer Feedback", tasks: 12, progressed: 15 },
   ];
 
   const recentActivity: any[] = [
     {
+      id: 6,
       isLastRecent: false,
       userInitials: "MA",
       user: "Mostafa Ahmed",
@@ -52,6 +76,7 @@ export default function Dashboard() {
       time: "2 hours ago",
     },
     {
+      id: 7,
       isLastRecent: false,
       userInitials: "SR",
       user: "Sara Reda",
@@ -60,6 +85,7 @@ export default function Dashboard() {
       time: "5 hours ago",
     },
     {
+      id: 8,
       isLastRecent: true,
       userInitials: "AH",
       user: "Ali Hassan",
@@ -72,13 +98,23 @@ export default function Dashboard() {
   // ===========================
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 duration-500">
+    <motion.main
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        duration: 0.5,
+        type: "spring",
+        stiffness: 100,
+        damping: 20,
+      }}
+      className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 duration-500"
+    >
       <div className="max-w-7xl mx-auto w-full">
         {/* HEADER */}
         <div className="mb-8">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           <p className="text-slate-500 mt-1">
-            Welcome back, {userName || "User"}. Here's what's happening today.
+            Welcome back, {firstName}. Here's what's happening today.
           </p>
         </div>
 
@@ -197,7 +233,7 @@ export default function Dashboard() {
                 <div className="space-y-6">
                   {recentActivity.map((a, i) => (
                     <RecentActivity
-                      key={i}
+                      key={a.id}
                       isLastRecent={i !== recentActivity.length - 1}
                       {...a}
                     />
@@ -210,6 +246,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-    </main>
+    </motion.main>
   );
 }
