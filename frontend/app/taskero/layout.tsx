@@ -22,9 +22,15 @@ export default function MainLayout({ children }: { children: ReactNode }) {
       <div className="flex">
         <Sidebar />
         <div className="w-full text-gray-900 dark:text-gray-100">
+<<<<<<< HEAD
           <header className="sticky z-2 top-0 backdrop-blur px-6 h-16 flex items-center border-b border-b-gray-300 dark:border-b-slate-700 w-full bg-white/80 dark:bg-gray-900/80">
             <div className="flex justify-between w-full">
               <div className="relative w-md mr-3">
+=======
+          <header className="sticky top-0 backdrop-blur px-6 h-16 flex items-center border-b border-b-gray-300 dark:border-b-slate-700 w-full bg-white/80 dark:bg-gray-900/80">
+            <div className="flex justify-between w-full">
+              <div className="relative w-md">
+>>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
                 <input
                   type="search"
                   placeholder="Search projects, tasks, or workspaces..."
@@ -56,7 +62,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <UserProvider>{children}</UserProvider>
         </div>
         {userPopup && (
+<<<<<<< HEAD
           <div onClick={() => setUserPopup(false)} className="absolute z-3 inset-0">
+=======
+          <div onClick={() => setUserPopup(false)} className="absolute inset-0">
+>>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
             <motion.div
               initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
