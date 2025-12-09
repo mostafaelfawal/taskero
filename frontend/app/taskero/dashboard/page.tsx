@@ -12,20 +12,13 @@ import { FiArrowRight, FiPlus, FiUsers } from "react-icons/fi";
 import { LuFolderKanban } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-<<<<<<< HEAD
 import { useMemo, useState } from "react";
 import CreateWorkspaceModal from "@/features/taskero/wokspaces/components/CreateWorkspaceModal";
-=======
-import { useMemo } from "react";
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
 
 export default function Dashboard() {
   const userName = useSelector((state: RootState) => state.user.name);
   const firstName = useMemo(() => userName.split(" ")[0] || "User", [userName]);
-<<<<<<< HEAD
   const [createWorkspaceModal, setCreateWorkspaceModal] = useState(false);
-=======
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
 
   const workspaces: any[] = [
     {
@@ -139,11 +132,7 @@ export default function Dashboard() {
                 </h2>
 
                 <Link
-<<<<<<< HEAD
                   href="/taskero/workspaces"
-=======
-                  href="taskero/workspaces"
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
                   className="group flex items-center gap-2 hover:underline text-violet-500 hover:text-violet-400 transition-colors"
                 >
                   View All
@@ -163,11 +152,7 @@ export default function Dashboard() {
                     <WorkspaceItem {...w} key={w.id} />
                   ))}
 
-<<<<<<< HEAD
                   <div onClick={() => setCreateWorkspaceModal(true)} className="rounded-xl border shadow flex flex-col items-center justify-center border-dashed text-slate-500 hover:text-violet-500 hover:border-violet-500/50 hover:bg-violet-500/5 cursor-pointer transition-colors h-30">
-=======
-                  <div className="rounded-xl border shadow flex flex-col items-center justify-center border-dashed text-slate-500 hover:text-violet-500 hover:border-violet-500/50 hover:bg-violet-500/5 cursor-pointer transition-colors h-30">
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
                     <FiPlus size={25} />
                     Create Workspace
                   </div>
@@ -183,11 +168,7 @@ export default function Dashboard() {
                   Projects
                 </h2>
                 <Link
-<<<<<<< HEAD
                   href="/taskero/workspaces"
-=======
-                  href="taskero/workspaces"
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
                   className="group flex items-center gap-2 hover:underline text-violet-500 hover:text-violet-400 transition-colors"
                 >
                   View All
@@ -267,14 +248,11 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
       {createWorkspaceModal && (
         <CreateWorkspaceModal
           closeModal={() => setCreateWorkspaceModal(false)}
         />
       )}
-=======
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
     </motion.main>
   );
 }

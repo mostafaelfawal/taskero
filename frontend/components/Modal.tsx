@@ -18,11 +18,7 @@ export default function Modal({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         onClick={(e) => e.stopPropagation()}
-<<<<<<< HEAD
         className="overflow-y-auto max-h-screen bg-white dark:bg-slate-900 w-full max-w-md rounded-xl shadow-xl p-6 relative"
-=======
-        className="bg-white dark:bg-slate-900 w-full max-w-md rounded-xl shadow-xl p-6 animate-fadeIn relative"
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
       >
         {/* Close Button */}
         <button

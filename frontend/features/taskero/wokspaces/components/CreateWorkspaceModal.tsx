@@ -15,7 +15,7 @@ export default function CreateWorkspaceModal({
   const [teamMembers, setTeamMembers] = useState<TeamMemberType[]>([]);
   
   const handleAddMember = () => {
-
+    
   }
   return (
     <Modal closeModal={closeModal}>

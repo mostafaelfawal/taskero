@@ -25,11 +25,7 @@ export default function Sidebar() {
     <aside
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-<<<<<<< HEAD
       className={`min-h-screen border-r border-r-gray-300 
-=======
-      className={`float-left min-h-screen border-r border-r-gray-300 
->>>>>>> 0460bd9acc706cb6a710f462cf6e6c956c26685a
       dark:border-slate-700 dark:bg-slate-900 transition-all duration-300
       ${isCollapsed || lockCollapse ? "w-64" : "w-20"}`}
     >
