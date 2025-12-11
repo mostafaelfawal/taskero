@@ -1,14 +1,46 @@
 import Modal from "@/components/Modal";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createWorkspaceSchema } from "../schemas/createWorspaceSchema";
+import {
+  createWorkspaceSchema,
+  createWorkspaceSchemaType,
+} from "../schemas/createWorspaceSchema";
 import ErrorText from "@/features/auth/components/ErrorText";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function CreateWorkspaceModal({
   closeModal,
 }: {
   closeModal: VoidFunction;
 }) {
+  const queryClient = useQueryClient();
+
+  const createWorkspaceMutation = useMutation({
+    mutationFn: async (data: createWorkspaceSchemaType) => {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/workspace/`,
+        {
+          name: data.name,
+          description: data.description,
+        },
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+
+    onSuccess: (m) => {
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+      toast.success(m.message);
+    },
+
+    onError: (error: any) => {
+      toast.error(
+        error.response?.data?.message || "Failed to create workspace"
+      );
+    },
+  });
 
   const {
     register,
@@ -18,7 +50,10 @@ export default function CreateWorkspaceModal({
     resolver: zodResolver(createWorkspaceSchema),
   });
 
-  const handleCreateWorkspace = () => {};
+  const handleCreateWorkspace = (data: createWorkspaceSchemaType) => {
+    closeModal();
+    createWorkspaceMutation.mutate(data);
+  };
 
   return (
     <Modal closeModal={closeModal}>

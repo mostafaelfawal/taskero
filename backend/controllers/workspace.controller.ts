@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Workspace } from "../models/Workspace.model";
 import mongoose from "mongoose";
+import { User } from "../models/User.model";
 
 export const createWorkspace = async (req: Request, res: Response) => {
   try {
@@ -18,7 +19,10 @@ export const createWorkspace = async (req: Request, res: Response) => {
       owners: [ownerId],
       admins: [],
       members: [],
+      projects: [],
     });
+
+    await User.findByIdAndUpdate(userId, { $inc: { workspaces: 1 } });
 
     return res.status(201).json({
       message: "Workspace created successfully",
@@ -39,7 +43,8 @@ export const getWorkspaces = async (req: Request, res: Response) => {
 
     const workspaces = await Workspace.find({
       $or: [{ owners: userId }, { admins: userId }, { members: userId }],
-    });
+    }).populate("owners", "avatar");
+
     return res.status(200).json({ workspaces });
   } catch (error) {
     console.log(error);
@@ -54,7 +59,7 @@ export const getWorkspace = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const workspaceId = req.params.id;
-    
+
     const workspace = await Workspace.findOne({
       _id: workspaceId,
       $or: [{ owners: userId }, { admins: userId }, { members: userId }],
@@ -110,6 +115,8 @@ export const deleteWorkspace = async (req: Request, res: Response) => {
     }
     const workspaceId = req.params.id;
     const workspace = await Workspace.findByIdAndDelete(workspaceId);
+    await User.findByIdAndUpdate(userId, { $inc: { workspaces: -1 } });
+    
     if (!workspace) {
       return res
         .status(404)

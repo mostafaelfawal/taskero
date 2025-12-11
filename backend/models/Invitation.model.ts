@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { v4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
 const InvitationSchema = new mongoose.Schema(
   {
@@ -8,42 +8,45 @@ const InvitationSchema = new mongoose.Schema(
       ref: "Workspace",
       required: true,
     },
-    email: {
-      type: String,
-      required: true,
-      index: true, // لتسريع البحث
-    },
-    role: {
-      type: String,
-      enum: ["owner", "admin", "member"],
-      required: true,
-      default: "member",
-    },
-    status: {
-      type: String,
-      enum: ["pending", "accepted", "declined", "expired"],
-      default: "pending",
-    },
-    invitedBy: {
+
+    inviter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    token: {
+
+    email: {
       type: String,
       required: true,
-      default: () => v4(),
+      trim: true,
+      lowercase: true,
     },
+
+    role: {
+      type: String,
+      enum: ["owner", "admin", "member"],
+    },
+
+    token: {
+      type: String,
+      default: uuidv4,
+    },
+
     expiresAt: {
       type: Date,
-      default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // صلاحية 7 أيام
+      default: () => Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 Days
+    },
+
+    status: {
+      type: String,
+      enum: ["pending", "accepted", "expired", "revoked"],
+      default: "pending",
     },
   },
   { timestamps: true }
 );
 
-// Index على workspaceId + email لتسريع البحث عند التحقق من الدعوات
-InvitationSchema.index({ workspaceId: 1, email: 1 }, { unique: true });
-InvitationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+InvitationSchema.index({ email: 1 });
+InvitationSchema.index({ workspaceId: 1 });
 
 export const Invitation = mongoose.model("Invitation", InvitationSchema);

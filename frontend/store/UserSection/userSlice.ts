@@ -19,6 +19,7 @@ const initialState: UserType = {
   gitHubProfile: "",
   linkedInProfile: "",
   portfolioWebsite: "",
+  notifications: [],
   createdAt: null,
   updatedAt: null,
   loading: false,

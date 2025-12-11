@@ -36,9 +36,11 @@ export default function MainLayout({ children }: { children: ReactNode }) {
                 <ToggleThemeButton />
                 <button className="relative text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 transition-colors w-9 h-9 flex justify-center items-center">
                   <FiBell />
-                  <span className="absolute top-1.5 right-1.5 rounded-full size-3 bg-red-500 border border-white dark:border-gray-800"></span>
+                  {!!user.notifications.length && (
+                    <span className="absolute top-1.5 right-1.5 rounded-full size-3 bg-red-500 border border-white dark:border-gray-800" />
+                  )}
                 </button>
-                <div className="h-6 w-px bg-gray-300 dark:bg-slate-600 mx-1"></div>
+                <div className="h-6 w-px bg-gray-300 dark:bg-slate-600 mx-1" />
                 <div
                   onClick={() => setUserPopup(true)}
                   className="relative h-9 w-9 rounded-full border border-gray-300 dark:border-gray-600 hover:border-violet-400 dark:hover:border-violet-500 transition-colors cursor-pointer"
@@ -56,7 +58,10 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           <UserProvider>{children}</UserProvider>
         </div>
         {userPopup && (
-          <div onClick={() => setUserPopup(false)} className="absolute z-3 inset-0">
+          <div
+            onClick={() => setUserPopup(false)}
+            className="absolute z-3 inset-0"
+          >
             <motion.div
               initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}

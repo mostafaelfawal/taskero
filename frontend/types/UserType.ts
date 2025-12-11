@@ -9,6 +9,7 @@ export interface UserType {
   gitHubProfile: string | null;
   linkedInProfile: string | null;
   portfolioWebsite: string | null;
+  notifications: string[];
   createdAt: string | null;
   updatedAt: string | null;
   loading: boolean;

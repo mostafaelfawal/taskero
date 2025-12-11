@@ -23,7 +23,7 @@ export default function WorkspaceItem({
       className="rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm group flex flex-col hover:border-violet-500/60 hover:shadow-md transition-all duration-300 bg-white dark:bg-gray-800 overflow-hidden"
     >
       {/* Header */}
-      <div className="flex flex-col space-y-1.5 p-6 pb-3">
+      <div className="flex flex-col space-y-1.5 p-6 pb-3 h-full">
         <div className="flex justify-between items-center gap-5">
           {/* Workspace Icon */}
           <div className="h-10 w-10 rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-300 flex items-center justify-center font-bold text-lg">
@@ -59,7 +59,7 @@ export default function WorkspaceItem({
         </div>
 
         {/* Owners */}
-        <div className="space-y-2">
+        <div className="space-y-2 mt-auto">
           <span className="text-xs font-medium text-slate-600 dark:text-slate-300 uppercase tracking-wider">
             Owners
           </span>

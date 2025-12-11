@@ -8,8 +8,8 @@ import generateToken from "../utils/generateToken";
 // ===============================
 const cookieOptions: CookieOptions = {
   httpOnly: true,
-  secure: true, // مهم جداً
-  sameSite: "none", // أهم نقطة!!!
+  secure: true,
+  sameSite: "none",
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/",
 };
