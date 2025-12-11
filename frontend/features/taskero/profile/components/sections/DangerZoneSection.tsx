@@ -4,10 +4,10 @@ import { AppDispatch, RootState } from "@/store/store";
 import { deleteUser } from "@/store/UserSection/thunks/deleteUser";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FiTrash2, FiX, FiAlertTriangle } from "react-icons/fi";
+import { FiTrash2, FiAlertTriangle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "@/components/Modal";
 
 export default function DangerZoneSection() {
@@ -71,100 +71,103 @@ export default function DangerZoneSection() {
       </div>
 
       {/* MODAL */}
-      {openModal && (
-        <Modal closeModal={closeModal}>
-          {step === 1 && (
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <FiAlertTriangle className="text-violet-500" size={28} />
-                <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
-                  Confirm Account Deletion
-                </h2>
-              </div>
+      <AnimatePresence>
+        {openModal && (
+          <Modal closeModal={closeModal}>
+            {step === 1 && (
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <FiAlertTriangle className="text-violet-500" size={28} />
+                  <h2 className="text-lg font-semibold text-slate-800 dark:text-white">
+                    Confirm Account Deletion
+                  </h2>
+                </div>
 
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
-                This action is <span className="font-semibold">permanent</span>{" "}
-                and will delete all your account data.
-                <br />
-                Please type{" "}
-                <span className="font-semibold text-violet-500">
-                  delete account
-                </span>{" "}
-                to continue.
-              </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                  This action is{" "}
+                  <span className="font-semibold">permanent</span> and will
+                  delete all your account data.
+                  <br />
+                  Please type{" "}
+                  <span className="font-semibold text-violet-500">
+                    delete account
+                  </span>{" "}
+                  to continue.
+                </p>
 
-              <input
-                type="text"
-                value={confirmText}
-                onChange={(e) => setConfirmText(e.target.value)}
-                placeholder="Type: delete account"
-                className="w-full px-3 py-2 border border-gray-500 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-shadow"
-              />
+                <input
+                  type="text"
+                  value={confirmText}
+                  onChange={(e) => setConfirmText(e.target.value)}
+                  placeholder="Type: delete account"
+                  className="w-full px-3 py-2 border border-gray-500 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-shadow"
+                />
 
-              <div className="flex justify-end gap-3 mt-5">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700"
-                >
-                  Cancel
-                </button>
+                <div className="flex justify-end gap-3 mt-5">
+                  <button
+                    onClick={closeModal}
+                    className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700"
+                  >
+                    Cancel
+                  </button>
 
-                <button
-                  disabled={
-                    confirmText.trim().toLowerCase() !== "delete account"
-                  }
-                  onClick={() => setStep(2)}
-                  className="px-4 py-2 rounded-lg bg-violet-500 text-white font-semibold disabled:opacity-50 hover:bg-violet-600"
-                >
-                  Continue
-                </button>
-              </div>
-            </motion.div>
-          )}
+                  <button
+                    disabled={
+                      confirmText.trim().toLowerCase() !== "delete account"
+                    }
+                    onClick={() => setStep(2)}
+                    className="px-4 py-2 rounded-lg bg-violet-500 text-white font-semibold disabled:opacity-50 hover:bg-violet-600"
+                  >
+                    Continue
+                  </button>
+                </div>
+              </motion.div>
+            )}
 
-          {step === 2 && (
-            <motion.div
-              initial={{ y: 10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <FiAlertTriangle className="text-red-500" size={28} />
-                <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">
-                  Final Warning
-                </h2>
-              </div>
+            {step === 2 && (
+              <motion.div
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <FiAlertTriangle className="text-red-500" size={28} />
+                  <h2 className="text-lg font-semibold text-red-600 dark:text-red-400">
+                    Final Warning
+                  </h2>
+                </div>
 
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
-                Your account and all data will be permanently deleted.
-                <br />
-                <span className="font-semibold">
-                  This action cannot be undone.
-                </span>
-              </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                  Your account and all data will be permanently deleted.
+                  <br />
+                  <span className="font-semibold">
+                    This action cannot be undone.
+                  </span>
+                </p>
 
-              <div className="flex justify-end gap-3 mt-5">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700"
-                >
-                  Cancel
-                </button>
+                <div className="flex justify-end gap-3 mt-5">
+                  <button
+                    onClick={closeModal}
+                    className="px-4 py-2 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700"
+                  >
+                    Cancel
+                  </button>
 
-                <button
-                  disabled={loading}
-                  onClick={handleDeleteAccount}
-                  className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-50"
-                >
-                  Delete Permanently
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </Modal>
-      )}
+                  <button
+                    disabled={loading}
+                    onClick={handleDeleteAccount}
+                    className="px-4 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 disabled:opacity-50"
+                  >
+                    Delete Permanently
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </Modal>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

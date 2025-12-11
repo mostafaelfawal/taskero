@@ -4,7 +4,6 @@ import InputField from "@/features/auth/components/InputField";
 import PasswordField from "@/features/auth/components/PasswordField";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BsGoogle } from "react-icons/bs";
 import { FiArrowRight } from "react-icons/fi";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { useForm } from "react-hook-form";

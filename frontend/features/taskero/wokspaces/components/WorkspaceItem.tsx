@@ -1,7 +1,10 @@
 import Image from "next/image";
 import { FiArrowRight, FiSettings, FiUsers } from "react-icons/fi";
 import { LuFolderKanban } from "react-icons/lu";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import WorkspaceSettings from "./WorkspaceSettings";
+import Tooltip from "@/components/Tooltip";
 
 export default function WorkspaceItem({
   title,
@@ -16,6 +19,8 @@ export default function WorkspaceItem({
   projects: number;
   ownersAvatar: string[];
 }) {
+  const [workspaceSettings, setWorkspaceSettings] = useState(false);
+
   return (
     <motion.div
       initial={{ y: 10, opacity: 0 }}
@@ -31,7 +36,12 @@ export default function WorkspaceItem({
           </div>
 
           {/* Settings */}
-          <FiSettings className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors" />
+          <Tooltip message="Manage Members">
+            <FiSettings
+              onClick={() => setWorkspaceSettings(true)}
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+            />
+          </Tooltip>
         </div>
 
         {/* Title */}
@@ -90,6 +100,13 @@ export default function WorkspaceItem({
           Open Workspace <FiArrowRight />
         </button>
       </div>
+      <AnimatePresence>
+        {workspaceSettings && (
+          <WorkspaceSettings
+            closeSettings={() => setWorkspaceSettings(false)}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

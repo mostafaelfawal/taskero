@@ -17,6 +17,7 @@ export default function Modal({
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
         className="overflow-y-auto max-h-screen bg-white dark:bg-slate-900 w-full max-w-md rounded-xl shadow-xl p-6 relative"
       >

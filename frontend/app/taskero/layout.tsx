@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ReactNode, useState } from "react";
 import { FiBell, FiLogOut, FiSearch, FiSettings, FiUser } from "react-icons/fi";
 import { useSelector } from "react-redux";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import UserProvider from "@/providers/UserProvider";
 import Link from "next/link";
 import LogoutModal from "@/features/taskero/components/logoutModal";
@@ -57,85 +57,90 @@ export default function MainLayout({ children }: { children: ReactNode }) {
           </header>
           <UserProvider>{children}</UserProvider>
         </div>
-        {userPopup && (
-          <div
-            onClick={() => setUserPopup(false)}
-            className="absolute z-3 inset-0"
-          >
-            <motion.div
-              initial={{ y: -10, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              onClick={(e) => e.stopPropagation()}
-              className="fixed top-14 right-5 
+        <AnimatePresence>
+          {userPopup && (
+            <div
+              onClick={() => setUserPopup(false)}
+              className="absolute z-3 inset-0"
+            >
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="fixed top-14 right-5 
                bg-white dark:bg-slate-900 
                border border-gray-200 dark:border-slate-700 
                shadow-lg rounded-md min-w-56 overflow-hidden"
-            >
-              {/* User Info */}
-              <div className="text-sm px-3 py-2.5">
-                <p className="text-sm font-medium leading-none text-slate-800 dark:text-white">
-                  {user.name || "User"}
-                </p>
-                <p className="text-xs leading-none text-slate-500 dark:text-slate-400 mt-1">
-                  {user.email || "user@taskero.com"}
-                </p>
-              </div>
+              >
+                {/* User Info */}
+                <div className="text-sm px-3 py-2.5">
+                  <p className="text-sm font-medium leading-none text-slate-800 dark:text-white">
+                    {user.name || "User"}
+                  </p>
+                  <p className="text-xs leading-none text-slate-500 dark:text-slate-400 mt-1">
+                    {user.email || "user@taskero.com"}
+                  </p>
+                </div>
 
-              <div className="my-1 h-px bg-slate-200 dark:bg-slate-700" />
+                <div className="my-1 h-px bg-slate-200 dark:bg-slate-700" />
 
-              {/* Menu Items */}
-              <div className="px-1">
-                <Link
-                  href={`/taskero/profile/${user._id}`}
-                  className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm
+                {/* Menu Items */}
+                <div className="px-1">
+                  <Link
+                    href={`/taskero/profile/${user._id}`}
+                    className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm
                    transition-colors 
                    hover:bg-gray-100 dark:hover:bg-slate-800 
                    text-slate-700 dark:text-slate-300"
-                >
-                  <FiUser />
-                  Profile
-                </Link>
+                  >
+                    <FiUser />
+                    Profile
+                  </Link>
 
-                <button
-                  className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm 
+                  <button
+                    className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm 
                    transition-colors 
                    hover:bg-gray-100 dark:hover:bg-slate-800 
                    text-slate-700 dark:text-slate-300 w-full"
-                >
-                  <FiSettings />
-                  Settings
-                </button>
-              </div>
+                  >
+                    <FiSettings />
+                    Settings
+                  </button>
+                </div>
 
-              <div className="my-1 h-px bg-slate-200 dark:bg-slate-700" />
+                <div className="my-1 h-px bg-slate-200 dark:bg-slate-700" />
 
-              {/* Logout */}
-              <div className="px-1 pb-1">
-                <button
-                  disabled={user.loading}
-                  onClick={() => setLogoutModal(true)}
-                  className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm 
+                {/* Logout */}
+                <div className="px-1 pb-1">
+                  <button
+                    disabled={user.loading}
+                    onClick={() => setLogoutModal(true)}
+                    className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-sm 
                    transition-colors 
                    hover:bg-gray-100 dark:hover:bg-slate-800 
                    w-full text-red-500 dark:text-red-400 
                    disabled:bg-gray-200 dark:disabled:bg-slate-700"
-                >
-                  {user.loading ? (
-                    <span className="w-4 h-4 rounded-full border-2 border-b-transparent animate-spin" />
-                  ) : (
-                    <>
-                      <FiLogOut />
-                      Logout
-                    </>
-                  )}
-                </button>
-              </div>
-            </motion.div>
-          </div>
-        )}
-        {logoutModal && (
-          <LogoutModal closeModal={() => setLogoutModal(false)} />
-        )}
+                  >
+                    {user.loading ? (
+                      <span className="w-4 h-4 rounded-full border-2 border-b-transparent animate-spin" />
+                    ) : (
+                      <>
+                        <FiLogOut />
+                        Logout
+                      </>
+                    )}
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {logoutModal && (
+            <LogoutModal closeModal={() => setLogoutModal(false)} />
+          )}
+        </AnimatePresence>
       </div>
     </>
   );
