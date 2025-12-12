@@ -61,6 +61,7 @@ export default function Workspaces() {
         {data?.map((w) => (
           <WorkspaceItem
             key={w._id}
+            _id={w._id!}
             title={w.name}
             description={w.description}
             members={[...w.members, ...w.owners, ...w.admins].length}

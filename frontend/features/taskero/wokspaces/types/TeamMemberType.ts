@@ -1,4 +1,7 @@
 export type TeamMemberType = {
+  _id?: string;
+  name: string;
   email: string;
-  role: "owner" | "admin" | "member";
+  avatar: string;
+  role: string;
 };

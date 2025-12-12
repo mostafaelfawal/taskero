@@ -7,12 +7,14 @@ import WorkspaceSettings from "./WorkspaceSettings";
 import Tooltip from "@/components/Tooltip";
 
 export default function WorkspaceItem({
+  _id,
   title,
   description,
   members,
   projects,
   ownersAvatar,
 }: {
+  _id: string;
   title: string;
   description?: string;
   members: number;
@@ -78,7 +80,7 @@ export default function WorkspaceItem({
             {ownersAvatar.slice(0, 2).map((owner) => (
               <Image
                 key={owner}
-                src={owner}
+                src={owner || "/default-avatar.png"}
                 alt="Owner Avatar"
                 width={8}
                 height={8}
@@ -103,6 +105,7 @@ export default function WorkspaceItem({
       <AnimatePresence>
         {workspaceSettings && (
           <WorkspaceSettings
+            workspaceId={_id}
             closeSettings={() => setWorkspaceSettings(false)}
           />
         )}

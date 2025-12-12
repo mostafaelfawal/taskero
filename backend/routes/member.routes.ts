@@ -3,8 +3,8 @@ import { deleteMember, getMembers, updateMemberRole } from "../controllers/membe
 
 const router = express.Router();
 
-router.get("/:id/members", getMembers);
-router.patch("/:id/members/:userId", updateMemberRole);
-router.delete("/:id/members/:userId", deleteMember);
+router.get("/:id", getMembers);
+router.patch("/:id/:memberId", updateMemberRole);
+router.delete("/:id/:memberId", deleteMember);
 
 export default router;
