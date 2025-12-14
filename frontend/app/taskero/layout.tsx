@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import UserProvider from "@/providers/UserProvider";
 import Link from "next/link";
 import LogoutModal from "@/features/taskero/components/logoutModal";
+import BottomBar from "@/features/taskero/components/Bottombar";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
@@ -21,14 +22,15 @@ export default function MainLayout({ children }: { children: ReactNode }) {
     <>
       <div className="flex">
         <Sidebar />
-        <div className="w-full text-gray-900 dark:text-gray-100">
+        <BottomBar />
+        <div className="w-full text-gray-900 dark:text-gray-100 pb-12 md:pb-0">
           <header className="sticky z-2 top-0 backdrop-blur px-6 h-16 flex items-center border-b border-b-gray-300 dark:border-b-slate-700 w-full bg-white/80 dark:bg-gray-900/80">
             <div className="flex justify-between w-full">
               <div className="relative w-md mr-3">
                 <input
                   type="search"
                   placeholder="Search projects, tasks, or workspaces..."
-                  className="w-full bg-gray-100 dark:bg-gray-800 pl-9 pr-4 py-2 rounded focus:outline-none focus:ring-3 focus:ring-violet-300 dark:focus:ring-violet-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-shadow"
+                  className="hidden sm:block w-full bg-gray-100 dark:bg-gray-800 pl-9 pr-4 py-2 rounded focus:outline-none focus:ring-3 focus:ring-violet-300 dark:focus:ring-violet-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition-shadow"
                 />
                 <FiSearch className="absolute top-3 left-2 text-gray-400 dark:text-gray-500" />
               </div>
@@ -55,7 +57,8 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
           </header>
-          <UserProvider>{children}</UserProvider>
+          {children}
+          {/* <UserProvider>{children}</UserProvider> */}
         </div>
         <AnimatePresence>
           {userPopup && (

@@ -36,7 +36,7 @@ export default function Workspaces() {
       }}
       className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 duration-500"
     >
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-3">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Workspaces</h1>
           <p className="text-slate-500 mt-1">
@@ -46,7 +46,7 @@ export default function Workspaces() {
 
         <button
           onClick={() => setCreateWorkspaceModal(true)}
-          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm transition-colors min-h-9 px-4 py-2 gap-2 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/25 duration-300"
+          className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm transition-colors min-h-9 px-4 py-2 gap-2 bg-violet-600 hover:bg-violet-700 text-white shadow-lg shadow-violet-500/25 duration-300 w-fit"
         >
           <FiPlus size={20} /> Add Workspace
         </button>
