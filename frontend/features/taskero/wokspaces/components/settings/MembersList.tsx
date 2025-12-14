@@ -24,7 +24,7 @@ export default function MembersList({
 }) {
   return (
     <div className="border border-gray-300 dark:border-gray-700 rounded-lg divide-y divide-gray-300 dark:divide-gray-700">
-      {isError && <p className="text-red-500">Failed to load members.</p>}
+      {isError && <p className="p-2 text-red-500">Failed to load members.</p>}
       {isLoading ? (
         <p className="p-2 animate-pulse">loading members...</p>
       ) : (

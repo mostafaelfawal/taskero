@@ -3,7 +3,7 @@ import { Workspace } from "../models/Workspace.model";
 
 export const getMembers = async (req: Request, res: Response) => {
   try {
-    const workspaceId = req.params.id;
+    const workspaceId = req.params.workspaceId;
 
     const workspace = await Workspace.findById(workspaceId)
       .populate("owners", "name avatar email")
@@ -40,9 +40,13 @@ export const getMembers = async (req: Request, res: Response) => {
 export const updateMemberRole = async (req: Request, res: Response) => {
   try {
     const { newRole } = req.body;
-    const workspaceId = req.params.id;
+    const workspaceId = req.params.workspaceId;
     const memberId = req.params.memberId;
+    const role = (req as any).role
 
+    if (role==="admin" && newRole === "owner") {
+      return res.status(400).json({ message: "admin cannot change owners role" })
+    }
     if (!["owner", "admin", "member"].includes(newRole)) {
       return res.status(400).json({ message: "Invalid role" });
     }
@@ -81,7 +85,7 @@ export const updateMemberRole = async (req: Request, res: Response) => {
 
 export const deleteMember = async (req: Request, res: Response) => {
   try {
-    const workspaceId = req.params.id;
+    const workspaceId = req.params.workspaceId;
     const memberId = req.params.memberId;
 
     const updatedWorkspace = await Workspace.findByIdAndUpdate(
