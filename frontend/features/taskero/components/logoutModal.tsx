@@ -23,7 +23,7 @@ export default function LogoutModal({
       router.replace("/auth/login");
     } else {
       const errMsg = resultAction.payload as string;
-      toast.error(errMsg);
+      toast.error(errMsg || "Logout failed");
     }
   };
   return (

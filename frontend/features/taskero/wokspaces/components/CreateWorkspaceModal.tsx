@@ -16,9 +16,11 @@ export default function CreateWorkspaceModal({
   closeModal: VoidFunction;
 }) {
   const queryClient = useQueryClient();
+  let createingWorkspace = null;
 
   const createWorkspaceMutation = useMutation({
     mutationFn: async (data: createWorkspaceSchemaType) => {
+      createingWorkspace = toast.loading("create workspace...");
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/workspace/`,
         {
@@ -27,18 +29,21 @@ export default function CreateWorkspaceModal({
         },
         { withCredentials: true }
       );
+
       return res.data;
     },
 
     onSuccess: (m) => {
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
       toast.success(m.message);
+      toast.dismiss(createingWorkspace!);
     },
 
     onError: (error: any) => {
       toast.error(
         error.response?.data?.message || "Failed to create workspace"
       );
+      toast.dismiss(createingWorkspace!);
     },
   });
 
@@ -124,9 +129,12 @@ export default function CreateWorkspaceModal({
 
             <button
               type="submit"
-              className="h-10 px-4 rounded-md bg-violet-600 hover:bg-violet-700 text-white transition"
+              disabled={createWorkspaceMutation.isPending}
+              className="h-10 px-4 rounded-md bg-violet-600 hover:bg-violet-700 disabled:opacity-50 text-white transition"
             >
-              Create Workspace
+              {createWorkspaceMutation.isPending
+                ? "Creating..."
+                : "Create Workspace"}
             </button>
           </div>
         </form>

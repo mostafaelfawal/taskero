@@ -4,10 +4,11 @@ import CreateWorkspaceModal from "@/features/taskero/wokspaces/components/Create
 import WorkspaceItem from "@/features/taskero/wokspaces/components/WorkspaceItem";
 import { WorkspaceType } from "@/features/taskero/wokspaces/types/WorkspaceType";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
+import WorkspaceItemLoading from "@/features/taskero/wokspaces/components/WorkspaceItemLoading";
 
 export default function Workspaces() {
   const [createWorkspaceModal, setCreateWorkspaceModal] = useState(false);
@@ -52,23 +53,30 @@ export default function Workspaces() {
         </button>
       </div>
 
-      {isLoading && <p className="my-2 animate-pulse">Loading workspaces...</p>}
       {isError && (
         <p className="my-2 text-red-500">Failed to load workspaces.</p>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {data?.map((w) => (
-          <WorkspaceItem
-            key={w._id}
-            _id={w._id!}
-            title={w.name}
-            description={w.description}
-            members={[...w.members, ...w.owners, ...w.admins].length}
-            projects={w.projects.length}
-            ownersAvatar={w.owners.map((a) => a.avatar)}
-          />
-        ))}
+        {isLoading ? (
+          <>
+            <WorkspaceItemLoading />
+            <WorkspaceItemLoading />
+            <WorkspaceItemLoading />
+          </>
+        ) : (
+          data?.map((w) => (
+            <WorkspaceItem
+              key={w._id}
+              _id={w._id!}
+              title={w.name}
+              description={w.description}
+              members={[...w.members, ...w.owners, ...w.admins].length}
+              projects={w.projects.length}
+              ownersAvatar={w.owners.map((a) => a.avatar)}
+            />
+          ))
+        )}
 
         {/* Create Button Card */}
         <div
@@ -87,12 +95,13 @@ export default function Workspaces() {
           </span>
         </div>
       </div>
-
-      {createWorkspaceModal && (
-        <CreateWorkspaceModal
-          closeModal={() => setCreateWorkspaceModal(false)}
-        />
-      )}
+      <AnimatePresence>
+        {createWorkspaceModal && (
+          <CreateWorkspaceModal
+            closeModal={() => setCreateWorkspaceModal(false)}
+          />
+        )}
+      </AnimatePresence>
     </motion.main>
   );
 }
