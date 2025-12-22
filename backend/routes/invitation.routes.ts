@@ -1,4 +1,5 @@
 import express from "express";
+import role from "../middlewares/role.middleware";
 import {
   acceptInvite,
   declineInvite,

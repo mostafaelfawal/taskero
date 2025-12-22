@@ -35,7 +35,7 @@ export default function Workspaces() {
         stiffness: 100,
         damping: 20,
       }}
-      className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 duration-500"
+      className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10"
     >
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-3">
         <div>

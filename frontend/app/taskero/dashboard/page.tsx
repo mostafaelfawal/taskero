@@ -109,7 +109,7 @@ export default function Dashboard() {
         stiffness: 100,
         damping: 20,
       }}
-      className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10 duration-500"
+      className="flex-1 overflow-y-auto p-6 md:p-8 lg:p-10"
     >
       <div className="max-w-7xl mx-auto w-full">
         {/* HEADER */}
@@ -168,7 +168,7 @@ export default function Dashboard() {
                   Projects
                 </h2>
                 <Link
-                  href="/taskero/workspaces"
+                  href="/taskero/projects"
                   className="group flex items-center gap-2 hover:underline text-violet-500 hover:text-violet-400 transition-colors"
                 >
                   View All

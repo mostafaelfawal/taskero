@@ -5,7 +5,7 @@ import role from "../middlewares/role.middleware";
 const router = express.Router();
 
 router.get("/:workspaceId", role("member"), getMembers);
-router.patch("/:workspaceId/:memberId", role("admin"), updateMemberRole);
-router.delete("/:workspaceId/:memberId", role("admin"), deleteMember);
+router.patch("/:workspaceId/:memberId", role("owner"), updateMemberRole);
+router.delete("/:workspaceId/:memberId", role("owner"), deleteMember);
 
 export default router;

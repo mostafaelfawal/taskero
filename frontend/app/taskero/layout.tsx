@@ -12,10 +12,17 @@ import UserProvider from "@/providers/UserProvider";
 import Link from "next/link";
 import LogoutModal from "@/features/taskero/components/logoutModal";
 import BottomBar from "@/features/taskero/components/Bottombar";
+import { MdNotifications } from "react-icons/md";
 
 export default function MainLayout({ children }: { children: ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
-  const [userPopup, setUserPopup] = useState(false);
+  const notifications: string[] = [
+    "New comment on 'Homepage Hero'",
+    "Project 'Website Redesign' status updated",
+    "You were added to 'Engineering' workspace",
+  ];
+  const [userPopover, setUserPopover] = useState(false);
+  const [notificationsPopover, setNotificationsPopover] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
 
   return (
@@ -36,15 +43,18 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               </div>
               <div className="flex gap-3 items-center">
                 <ToggleThemeButton />
-                <button className="relative text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 transition-colors w-9 h-9 flex justify-center items-center">
+                <button
+                  onClick={() => setNotificationsPopover(true)}
+                  className="relative text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 transition-colors w-9 h-9 flex justify-center items-center"
+                >
                   <FiBell />
-                  {!!user.notifications.length && (
+                  {!!notifications.length && (
                     <span className="absolute top-1.5 right-1.5 rounded-full size-3 bg-red-500 border border-white dark:border-gray-800" />
                   )}
                 </button>
                 <div className="h-6 w-px bg-gray-300 dark:bg-slate-600 mx-1" />
                 <div
-                  onClick={() => setUserPopup(true)}
+                  onClick={() => setUserPopover(true)}
                   className="relative h-9 w-9 rounded-full border border-gray-300 dark:border-gray-600 hover:border-violet-400 dark:hover:border-violet-500 transition-colors cursor-pointer"
                 >
                   <Image
@@ -57,13 +67,12 @@ export default function MainLayout({ children }: { children: ReactNode }) {
               </div>
             </div>
           </header>
-          {children}
-          {/* <UserProvider>{children}</UserProvider> */}
+          <UserProvider>{children}</UserProvider>
         </div>
         <AnimatePresence>
-          {userPopup && (
+          {userPopover && (
             <div
-              onClick={() => setUserPopup(false)}
+              onClick={() => setUserPopover(false)}
               className="absolute z-3 inset-0"
             >
               <motion.div
@@ -139,6 +148,77 @@ export default function MainLayout({ children }: { children: ReactNode }) {
             </div>
           )}
         </AnimatePresence>
+        <AnimatePresence>
+          {notificationsPopover && (
+            <div
+              onClick={() => setNotificationsPopover(false)}
+              className="absolute z-3 inset-0"
+            >
+              <motion.div
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -10, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="fixed top-14 right-5
+        bg-white dark:bg-slate-900
+        border border-gray-200 dark:border-slate-700
+        shadow-lg rounded-md min-w-56 overflow-hidden"
+              >
+                {/* Header */}
+                <h2
+                  className="px-4 py-3 font-medium text-sm
+          text-slate-800 dark:text-slate-100
+          border-b border-gray-200 dark:border-slate-700"
+                >
+                  Notifications
+                </h2>
+
+                {notifications.length ? (
+                  <div className="max-h-75 overflow-y-auto">
+                    {notifications.map((n, i) => (
+                      <div
+                        key={i}
+                        className="px-4 py-3 cursor-pointer transition-colors
+                        hover:bg-gray-100 dark:hover:bg-slate-800
+                        border-b border-gray-200 dark:border-slate-700 last:border-0"
+                      >
+                        <p className="text-sm text-slate-700 dark:text-slate-200">
+                          {n}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
+                          3h ago
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div
+                    className="px-4 py-6 flex flex-col items-center gap-2
+                  text-gray-500 dark:text-slate-400"
+                  >
+                    <MdNotifications size={20} />
+                    <span className="text-xs">No notifications</span>
+                  </div>
+                )}
+
+                {/* Footer */}
+                <div className="p-2 border-t border-gray-200 dark:border-slate-700">
+                  <Link
+                    href="/taskero/notifications/"
+                    className="inline-flex items-center justify-center
+                    w-full h-8 rounded-md text-xs
+                    text-violet-600 dark:text-violet-400
+                    hover:bg-gray-100 dark:hover:bg-slate-800
+                    transition-colors"
+                  >
+                    View all notifications
+                  </Link>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
         <AnimatePresence>
           {logoutModal && (
             <LogoutModal closeModal={() => setLogoutModal(false)} />
