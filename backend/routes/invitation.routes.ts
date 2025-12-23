@@ -11,10 +11,10 @@ import {
 
 const router = express.Router();
 
-router.post("/:id/invitations", inviteMember);
-router.get("/:id/invitations", getInvites);
-router.patch("/:id/invitations/:inviteId", updateInvite);
-router.delete("/:id/invitations/:inviteId", deleteInvite);
+router.post("/:workspaceId", role("owner"), inviteMember);
+router.get("/:workspaceId", role("admin"), getInvites);
+router.patch("/:workspaceId/:inviteId", updateInvite);
+router.delete("/:workspaceId/:inviteId", deleteInvite);
 router.post("/:token/accept", acceptInvite);
 router.post("/:token/decline", declineInvite);
 

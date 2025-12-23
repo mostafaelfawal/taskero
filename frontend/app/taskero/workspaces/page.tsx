@@ -9,6 +9,7 @@ import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import WorkspaceItemLoading from "@/features/taskero/wokspaces/components/WorkspaceItemLoading";
+import ErrorText from "@/features/auth/components/ErrorText";
 
 export default function Workspaces() {
   const [createWorkspaceModal, setCreateWorkspaceModal] = useState(false);
@@ -53,9 +54,7 @@ export default function Workspaces() {
         </button>
       </div>
 
-      {isError && (
-        <p className="my-2 text-red-500">Failed to load workspaces.</p>
-      )}
+      {isError && <ErrorText errorMessage="Failed to load workspaces." />}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {isLoading ? (

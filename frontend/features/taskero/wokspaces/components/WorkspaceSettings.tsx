@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useState, useRef, useEffect } from "react";
 import InviteBox from "./settings/InviteBox";
 import MembersList from "./settings/MembersList";
+import { RoleType } from "../types/RoleType";
 
 export default function WorkspaceSettings({
   workspaceId,
@@ -63,9 +64,36 @@ export default function WorkspaceSettings({
     onError: () => toast.error("Failed to change role"),
   });
 
+  const sendInvite = useMutation({
+    mutationFn: ({
+      memberEmail,
+      role,
+    }: {
+      memberEmail: string;
+      role: RoleType;
+    }) =>
+      axios.post(
+        `${API_URL}/api/invitation/${workspaceId}/`,
+        {
+          memberEmail,
+          role,
+        },
+        { withCredentials: true }
+      ),
+    onSuccess: (res) => {
+      toast.success(res.data.message);
+      queryClient.invalidateQueries({ queryKey: ["invitations"] });
+    },
+    onError: (res: any) => {
+      toast.error(res.response.data.message);
+    },
+  });
+
   const handleDelete = (id: string) => deleteMemberMutation.mutate(id);
   const handleUpdate = (id: string, newRole: string) =>
     updateRoleMutation.mutate({ memberId: id, newRole });
+  const handleSendInvite = (memberEmail: string, role: RoleType) =>
+    sendInvite.mutate({ memberEmail, role });
 
   const [popoverOpen, setPopoverOpen] = useState<number | null>(null);
   const togglePopover = (i: number) =>
@@ -116,7 +144,12 @@ export default function WorkspaceSettings({
           <p className="text-sm text-gray-500">Manage access and roles.</p>
         </div>
 
-        <InviteBox />
+        <InviteBox
+          workspaceId={workspaceId}
+          sendInvite={(memberEmail, role) =>
+            handleSendInvite(memberEmail, role)
+          }
+        />
 
         <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">
           Workspace Members ({data.length})

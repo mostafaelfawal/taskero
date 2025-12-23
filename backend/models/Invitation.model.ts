@@ -9,17 +9,16 @@ const InvitationSchema = new mongoose.Schema(
       required: true,
     },
 
-    inviter: {
+    inviterId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    email: {
-      type: String,
+    memberId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
-      trim: true,
-      lowercase: true,
     },
 
     role: {

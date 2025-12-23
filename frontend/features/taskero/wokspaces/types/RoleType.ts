@@ -1,0 +1,1 @@
+export type RoleType = "owner" | "admin" | "member";
