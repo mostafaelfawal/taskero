@@ -2,6 +2,7 @@ import { FiClock, FiCheck, FiX } from "react-icons/fi";
 import { NotificationIcon } from "./NotificationIcon";
 import { NotificationBadge } from "./NotificationBadge";
 import { NotificationType } from "../types/NotificationType";
+import { motion } from "framer-motion";
 
 export function NotificationItem({
   read,
@@ -11,7 +12,9 @@ export function NotificationItem({
   image,
 }: NotificationType) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className={`relative flex rounded-lg p-4 border
         ${
           read
@@ -56,6 +59,6 @@ export function NotificationItem({
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

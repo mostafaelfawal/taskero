@@ -22,7 +22,7 @@ export const inviteMember = async (req: Request, res: Response) => {
     });
 
     if (workspace) {
-      return res.status(400).json({ message: "User already in workspace" });
+      return res.status(400).json({ message: "Member already in workspace" });
     }
 
     const inviteExists = await Invitation.findOne({ memberId, workspaceId });
@@ -32,9 +32,9 @@ export const inviteMember = async (req: Request, res: Response) => {
 
     await Invitation.create({ workspaceId, inviterId, memberId, role });
 
-    return res.status(201).json({ message: "User invited successfully" });
+    return res.status(201).json({ message: "Member invited successfully" });
   } catch (error) {
-    res.status(400).json({ message: "Failed to invite user" });
+    res.status(400).json({ message: "Failed to invite Member" });
   }
 };
 

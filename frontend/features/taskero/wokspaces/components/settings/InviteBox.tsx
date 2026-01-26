@@ -70,7 +70,7 @@ export default function InviteBox({
         </select>
 
         <button
-          disabled={isLoading}
+          disabled={isLoading || !email}
           onClick={() => sendInvite(email, role)}
           className="h-10 px-5 rounded-md bg-violet-600 disabled:opacity-60 hover:bg-violet-700 text-white text-sm transition shadow-sm flex items-center gap-2 w-fit"
         >

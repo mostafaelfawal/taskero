@@ -14,21 +14,21 @@ export default function Notifications() {
       message: "Sarah Connor invited you to 'Product Design' workspace",
       type: "invite",
       createdAt: "30 minutes",
-      read: false,
+      read: true,
     },
     {
       id: 1927319824,
       message: "You were added to 'Engineering' workspace",
       type: "system",
       createdAt: "1 day",
-      read: true,
+      read: false,
     },
     {
       id: 1927319825,
       message: "New comment on 'Homepage Hero' design",
       type: "comment",
       createdAt: "1 hour",
-      read: false,
+      read: true,
     },
     {
       id: 1927319826,
@@ -45,6 +45,8 @@ export default function Notifications() {
       read: true,
     },
   ]);
+  const [filteredNotifications, setFilteredNotifications] =
+    useState<NotificationType[]>(notifications);
 
   return (
     <motion.main
@@ -65,16 +67,23 @@ export default function Notifications() {
 
       <div className="mt-8">
         {/* Filters */}
-        <NotificationFilters />
+        <NotificationFilters
+          setFilteredNotifications={(n) => setFilteredNotifications(n)}
+          notifications={notifications}
+        />
 
-        {notifications.length ? (
+        {filteredNotifications.length ? (
           <div className="space-y-3 mt-6">
-            {notifications.map((n) => (
+            {filteredNotifications.map((n) => (
               <NotificationItem key={n.id} {...n} />
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-16 text-center">
+          <motion.div
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="flex flex-col items-center justify-center py-16 text-center"
+          >
             <div className="h-16 w-16 rounded-full bg-slate-300/50 dark:bg-slate-700/50 flex items-center justify-center mb-4">
               <FiBell size={25} />
             </div>
@@ -82,7 +91,7 @@ export default function Notifications() {
             <p className="text-slate-500 dark:text-slate-400 max-w-sm">
               No notifications match your current filters.
             </p>
-          </div>
+          </motion.div>
         )}
       </div>
     </motion.main>
