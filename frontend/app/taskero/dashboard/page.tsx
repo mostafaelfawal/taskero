@@ -14,11 +14,28 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import CreateWorkspaceModal from "@/features/taskero/wokspaces/components/CreateWorkspaceModal";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { WorkspaceType } from "@/features/taskero/wokspaces/types/WorkspaceType";
 
 export default function Dashboard() {
   const userName = useSelector((state: RootState) => state.user.name);
   const firstName = useMemo(() => userName.split(" ")[0] || "User", [userName]);
   const [createWorkspaceModal, setCreateWorkspaceModal] = useState(false);
+  const {
+    data = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["workspaces"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/workspace/`,
+        { withCredentials: true },
+      );
+      return res.data.workspaces as WorkspaceType[];
+    },
+  });
 
   const workspaces: any[] = [
     {
@@ -116,7 +133,7 @@ export default function Dashboard() {
         <div className="mb-8">
           <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
           <p className="text-slate-500 mt-1">
-            Welcome back, {firstName}. Here's what's happening today.
+            {`Welcome back, ${firstName}. Here's what's happening today.`}
           </p>
         </div>
 
@@ -140,7 +157,7 @@ export default function Dashboard() {
                 </Link>
               </div>
 
-              {workspaces.length === 0 ? (
+              {data.length === 0 ? (
                 <EmptyState
                   icon={FiUsers}
                   title="No Workspaces Yet"
@@ -148,11 +165,14 @@ export default function Dashboard() {
                 />
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {workspaces.map((w) => (
-                    <WorkspaceItem {...w} key={w.id} />
+                  {data.map((w) => (
+                    <WorkspaceItem {...w} key={w._id} />
                   ))}
 
-                  <div onClick={() => setCreateWorkspaceModal(true)} className="rounded-xl border shadow flex flex-col items-center justify-center border-dashed text-slate-500 hover:text-violet-500 hover:border-violet-500/50 hover:bg-violet-500/5 cursor-pointer transition-colors h-30">
+                  <div
+                    onClick={() => setCreateWorkspaceModal(true)}
+                    className="rounded-xl border shadow flex flex-col items-center justify-center border-dashed text-slate-500 hover:text-violet-500 hover:border-violet-500/50 hover:bg-violet-500/5 cursor-pointer transition-colors h-30"
+                  >
                     <FiPlus size={25} />
                     Create Workspace
                   </div>
@@ -222,7 +242,7 @@ export default function Dashboard() {
                 Recent Activity
               </h2>
               <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">
-                What's happening in your team
+                {"What's happening in your team"}
               </p>
 
               {recentActivity.length === 0 ? (

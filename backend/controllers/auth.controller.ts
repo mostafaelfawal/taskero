@@ -1,7 +1,7 @@
 import { CookieOptions, Request, Response } from "express";
 import { User } from "../models/User.model";
 import bcrypt from "bcrypt";
-import generateToken from "../utils/generateToken";
+import jwt from "jsonwebtoken";
 
 // ===============================
 // Cookie Settings
@@ -17,6 +17,13 @@ const cookieOptions: CookieOptions = {
 // ===============================
 // Helper – Send JWT Cookie
 // ===============================
+function generateToken(_id: string) {
+  return jwt.sign({ id: _id }, process.env.JWT_SECRET!, {
+    expiresIn: "7d",
+    issuer: "taskero",
+  });
+}
+
 function sendCookie(userId: string, res: Response) {
   const token = generateToken(userId);
   res.cookie("token", token, cookieOptions);
