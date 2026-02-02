@@ -4,4 +4,6 @@ export type TeamMemberType = {
   email: string;
   avatar: string;
   role: string;
+  status: "pending" | "accepted" | "expired" | "revoked";
+  memberId: { name: string; avatar: string };
 };

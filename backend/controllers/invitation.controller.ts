@@ -47,7 +47,7 @@ export const getInvites = async (req: Request, res: Response) => {
     }
     const invitations = await Invitation.find({ workspaceId }).populate(
       "memberId",
-      "email name avatar"
+      "email name avatar",
     );
     return res.status(200).json({ invitations });
   } catch (error) {
@@ -80,7 +80,9 @@ export const acceptInvite = async (req: Request, res: Response) => {
     }
 
     if (invite.memberId.toString() !== userId) {
-      return res.status(403).json({ message: "Not allowed to accept this invite" });
+      return res
+        .status(403)
+        .json({ message: "Not allowed to accept this invite" });
     }
 
     const workspace = await Workspace.findById(invite.workspaceId);
@@ -105,7 +107,9 @@ export const acceptInvite = async (req: Request, res: Response) => {
     invite.status = "accepted";
     await invite.save();
 
-    return res.status(200).json({ message: "Invitation accepted successfully" });
+    return res
+      .status(200)
+      .json({ message: "Invitation accepted successfully" });
   } catch (error) {
     return res.status(400).json({ message: "Failed to accept invite" });
   }
