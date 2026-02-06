@@ -1,7 +1,7 @@
 export type MessageType = "invite" | "alert" | "message" | "comment" | "system";
 
 export type NotificationType = {
-  id: number;
+  _id: number;
   message: string;
   type: MessageType;
   createdAt: string;

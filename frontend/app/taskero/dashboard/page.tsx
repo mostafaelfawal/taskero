@@ -22,11 +22,7 @@ export default function Dashboard() {
   const userName = useSelector((state: RootState) => state.user.name);
   const firstName = useMemo(() => userName.split(" ")[0] || "User", [userName]);
   const [createWorkspaceModal, setCreateWorkspaceModal] = useState(false);
-  const {
-    data = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const workspaces = useQuery({
     queryKey: ["workspaces"],
     queryFn: async () => {
       const res = await axios.get(
@@ -36,30 +32,6 @@ export default function Dashboard() {
       return res.data.workspaces as WorkspaceType[];
     },
   });
-
-  const workspaces: any[] = [
-    {
-      id: 9,
-      title: "Product Design",
-      lastActive: "2h",
-      members: 12,
-      projects: 8,
-    },
-    {
-      id: 10,
-      title: "Marketing Team",
-      lastActive: "1d",
-      members: 5,
-      projects: 3,
-    },
-    {
-      id: 11,
-      title: "Engineering",
-      lastActive: "4h",
-      members: 24,
-      projects: 15,
-    },
-  ];
 
   const adminProjects: any[] = [
     {
@@ -157,7 +129,7 @@ export default function Dashboard() {
                 </Link>
               </div>
 
-              {data.length === 0 ? (
+              {workspaces.data?.length === 0 ? (
                 <EmptyState
                   icon={FiUsers}
                   title="No Workspaces Yet"
@@ -165,7 +137,7 @@ export default function Dashboard() {
                 />
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {data.map((w) => (
+                  {workspaces.data?.map((w) => (
                     <WorkspaceItem {...w} key={w._id} />
                   ))}
 

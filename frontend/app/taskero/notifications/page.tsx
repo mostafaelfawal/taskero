@@ -6,47 +6,23 @@ import { FiBell } from "react-icons/fi";
 import { NotificationItem } from "@/features/taskero/notifications/components/NotificationItem";
 import NotificationFilters from "@/features/taskero/notifications/components/NotificationFilters";
 import { NotificationType } from "@/features/taskero/notifications/types/NotificationType";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function Notifications() {
-  const [notifications] = useState<NotificationType[]>([
-    {
-      id: 1927319823,
-      message: "Sarah Connor invited you to 'Product Design' workspace",
-      type: "invite",
-      createdAt: "30 minutes",
-      read: true,
+  const { data = [] } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications`,
+        { withCredentials: true },
+      );
+      return res.data.notifications as NotificationType[];
     },
-    {
-      id: 1927319824,
-      message: "You were added to 'Engineering' workspace",
-      type: "system",
-      createdAt: "1 day",
-      read: false,
-    },
-    {
-      id: 1927319825,
-      message: "New comment on 'Homepage Hero' design",
-      type: "comment",
-      createdAt: "1 hour",
-      read: true,
-    },
-    {
-      id: 1927319826,
-      message: "Jhon Doe mentioned you in a comment",
-      type: "message",
-      createdAt: "2 hours",
-      read: false,
-    },
-    {
-      id: 1927319827,
-      message: "Project 'Website Redesign' status updated to At Risk",
-      type: "alert",
-      createdAt: "3 hours",
-      read: true,
-    },
-  ]);
+  });
+
   const [filteredNotifications, setFilteredNotifications] =
-    useState<NotificationType[]>(notifications);
+    useState<NotificationType[]>(data);
 
   return (
     <motion.main
@@ -69,13 +45,13 @@ export default function Notifications() {
         {/* Filters */}
         <NotificationFilters
           setFilteredNotifications={(n) => setFilteredNotifications(n)}
-          notifications={notifications}
+          notifications={data}
         />
 
         {filteredNotifications.length ? (
           <div className="space-y-3 mt-6">
             {filteredNotifications.map((n) => (
-              <NotificationItem key={n.id} {...n} />
+              <NotificationItem key={n._id} {...n} />
             ))}
           </div>
         ) : (
