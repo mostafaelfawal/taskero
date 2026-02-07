@@ -47,7 +47,7 @@ export const inviteMember = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Member already invited" });
     }
 
-    await Invitation.create({
+    const newInvitation = await Invitation.create({
       workspaceId,
       inviterId,
       memberId,
@@ -58,11 +58,10 @@ export const inviteMember = async (req: Request, res: Response) => {
       message: `${inviter.name} invited you to '${workspace.name}' workspace`,
       type: "invite",
       userId: memberId,
+      token: newInvitation.token,
     });
 
-    return res
-      .status(201)
-      .json({ message: "Member invited successfully" });
+    return res.status(201).json({ message: "Member invited successfully" });
   } catch (error) {
     return res.status(400).json({ message: "Failed to invite Member" });
   }
@@ -79,7 +78,7 @@ export const getInvites = async (req: Request, res: Response) => {
 
     const invitations = await Invitation.find({ workspaceId }).populate(
       "memberId",
-      "email name avatar"
+      "email name avatar",
     );
 
     return res.status(200).json({ invitations });
@@ -96,7 +95,6 @@ export const acceptInvite = async (req: Request, res: Response) => {
   try {
     const { token } = req.params;
     const userId = (req as any).user.id;
-
     const invite = await Invitation.findOne({ token });
     if (!invite) {
       return res.status(404).json({ message: "Invitation not found" });
@@ -137,6 +135,7 @@ export const acceptInvite = async (req: Request, res: Response) => {
     await workspace.save();
 
     invite.status = "accepted";
+    await Invitation.findOneAndDelete({ token });
     await invite.save();
 
     return res

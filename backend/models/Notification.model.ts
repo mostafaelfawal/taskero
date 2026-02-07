@@ -10,6 +10,7 @@ const NotificationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    token: String,
   },
   { timestamps: true },
 );

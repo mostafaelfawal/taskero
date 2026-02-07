@@ -7,4 +7,5 @@ export type NotificationType = {
   createdAt: string;
   read: boolean;
   image?: string;
+  token?: string;
 };

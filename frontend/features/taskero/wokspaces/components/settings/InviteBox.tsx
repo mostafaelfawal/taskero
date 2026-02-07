@@ -3,7 +3,7 @@ import { FiSend, FiUserPlus } from "react-icons/fi";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { RoleType } from "../../types/RoleType";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import ErrorText from "@/features/auth/components/ErrorText";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -49,8 +49,8 @@ export default function InviteBox({ workspaceId }: { workspaceId: string }) {
       setIsSend(false);
       queryClient.invalidateQueries({ queryKey: ["invitations"] });
     },
-    onError: (res: any) => {
-      toast.error(res.response.data.message);
+    onError: (res: AxiosError<{ message: string }>) => {
+      toast.error(res.response?.data.message);
       setIsSend(false);
     },
   });

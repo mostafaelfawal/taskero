@@ -6,15 +6,10 @@ import { GoShieldLock } from "react-icons/go";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { FiGithub, FiLinkedin } from "react-icons/fi";
+import formatDate from "@/utils/formatDate";
 
 export default function ProfileCardSection() {
   const user = useSelector((state: RootState) => state.user);
-  const formatDate = (strDate: string) =>
-    new Intl.DateTimeFormat("en", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    }).format(new Date(strDate));
 
   return (
     <section className="bg-white dark:bg-slate-800 overflow-hidden rounded-xl shadow dark:shadow-lg">

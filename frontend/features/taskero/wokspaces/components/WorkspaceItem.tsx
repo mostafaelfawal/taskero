@@ -53,7 +53,7 @@ export default function WorkspaceItem({
 
         {/* Description */}
         {description && (
-          <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 h-10">
+          <p className="text-sm text-slate-500 dark:text-slate-400 truncate h-10">
             {description}
           </p>
         )}

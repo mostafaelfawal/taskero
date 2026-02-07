@@ -3,6 +3,10 @@ import { NotificationIcon } from "./NotificationIcon";
 import { NotificationBadge } from "./NotificationBadge";
 import { NotificationType } from "../types/NotificationType";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
+import axios, { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import formatDate from "@/utils/formatDate";
 
 export function NotificationItem({
   read,
@@ -10,7 +14,26 @@ export function NotificationItem({
   message,
   createdAt,
   image,
+  token,
 }: NotificationType) {
+  const acceptInvitation = useMutation({
+    mutationFn: async (token: string) => {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/invitation/${token}/accept`,
+        {},
+        { withCredentials: true },
+      );
+      return res.data;
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || "Failed to accept invite");
+    },
+  });
+
+  const handleAcceptInvitation = () => {
+    acceptInvitation.mutate(token!);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -45,12 +68,16 @@ export function NotificationItem({
 
         <p className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
           <FiClock />
-          {createdAt} ago
+          {formatDate(createdAt)}
         </p>
 
         {type === "invite" && (
           <div className="flex gap-3">
-            <button className="flex items-center gap-2 rounded-md px-3 py-1 text-sm bg-violet-500 text-white hover:bg-violet-600">
+            <button
+              disabled={acceptInvitation.isPending}
+              onClick={handleAcceptInvitation}
+              className="flex items-center gap-2 rounded-md px-3 py-1 text-sm bg-violet-500 text-white hover:bg-violet-600 disabled:opacity-50"
+            >
               <FiCheck /> Accept
             </button>
             <button className="flex items-center gap-2 rounded-md px-3 py-1 text-sm border border-slate-300 dark:border-slate-700">

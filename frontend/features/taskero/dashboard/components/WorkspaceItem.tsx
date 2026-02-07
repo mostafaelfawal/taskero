@@ -1,6 +1,7 @@
 import { FiUsers } from "react-icons/fi";
 import { LuFolderKanban } from "react-icons/lu";
 import { motion } from "framer-motion";
+import formatDate from "@/utils/formatDate";
 
 export default function WorkspaceItem({
   name,
@@ -13,13 +14,6 @@ export default function WorkspaceItem({
   members: string[];
   projects: string[];
 }) {
-  const formatDate = (strDate: string) =>
-    new Intl.DateTimeFormat("en", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    }).format(new Date(strDate));
-
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}

@@ -6,7 +6,7 @@ import {
   createWorkspaceSchemaType,
 } from "../schemas/createWorspaceSchema";
 import ErrorText from "@/features/auth/components/ErrorText";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -39,7 +39,7 @@ export default function CreateWorkspaceModal({
       toast.dismiss(createingWorkspace!);
     },
 
-    onError: (error: any) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       toast.error(
         error.response?.data?.message || "Failed to create workspace"
       );
