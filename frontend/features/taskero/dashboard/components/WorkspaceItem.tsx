@@ -25,7 +25,7 @@ export default function WorkspaceItem({
       </h2>
 
       <p className="text-xs mt-1.5 text-slate-500 dark:text-slate-400">
-        Last active {formatDate(updatedAt)} ago
+        Last active {formatDate(updatedAt)}
       </p>
 
       <div className="mt-2 flex justify-between items-center text-slate-600 dark:text-slate-300">

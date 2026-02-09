@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import WorkspaceSettings from "./WorkspaceSettings";
 import Tooltip from "@/components/Tooltip";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { TeamMemberType } from "../types/TeamMemberType";
 
 export default function WorkspaceItem({
   _id,
@@ -22,6 +27,28 @@ export default function WorkspaceItem({
   ownersAvatar: string[];
 }) {
   const [workspaceSettings, setWorkspaceSettings] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const userId = useSelector((state: RootState) => state.user._id);
+  const [userRole, setUserRole] = useState("");
+
+  const {
+    data = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["members", _id],
+    queryFn: async () => {
+      const res = await axios.get(`${API_URL}/api/member/${_id}`, {
+        withCredentials: true,
+      });
+      const gettedMembers = res.data.members;
+      const userFromMembers = gettedMembers.find(
+        (m: TeamMemberType) => m._id === userId,
+      );
+      setUserRole(userFromMembers.role);
+      return gettedMembers;
+    },
+  });
 
   return (
     <motion.div
@@ -38,12 +65,14 @@ export default function WorkspaceItem({
           </div>
 
           {/* Settings */}
-          <Tooltip message="Manage Members">
-            <FiSettings
-              onClick={() => setWorkspaceSettings(true)}
-              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
-            />
-          </Tooltip>
+          {userRole === "owner" && (
+            <Tooltip message="Manage Members">
+              <FiSettings
+                onClick={() => setWorkspaceSettings(true)}
+                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300 transition-colors"
+              />
+            </Tooltip>
+          )}
         </div>
 
         {/* Title */}
@@ -107,6 +136,9 @@ export default function WorkspaceItem({
           <WorkspaceSettings
             workspaceId={_id}
             closeSettings={() => setWorkspaceSettings(false)}
+            members={data}
+            isLoading={isLoading}
+            isError={isError}
           />
         )}
       </AnimatePresence>

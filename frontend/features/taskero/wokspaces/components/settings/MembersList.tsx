@@ -1,6 +1,7 @@
 import MemberItem from "./MemberItem";
 import { TeamMemberType } from "../../types/TeamMemberType";
 import ErrorText from "@/features/auth/components/ErrorText";
+import { RefObject } from "react";
 
 export default function MembersList({
   data,
@@ -18,7 +19,7 @@ export default function MembersList({
   isError: boolean;
   popoverOpen: number | null;
   togglePopover: (i: number) => void;
-  popoverRef: any;
+  popoverRef: RefObject<HTMLDivElement>;
   isLast: (i: number) => boolean;
   handleDelete: (id: string) => void;
   handleUpdate: (memberId: string, newRole: string) => void;

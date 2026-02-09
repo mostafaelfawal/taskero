@@ -1,35 +1,28 @@
 import { motion } from "framer-motion";
 import { FiX } from "react-icons/fi";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useState, useRef, useEffect } from "react";
 import InviteBox from "./settings/InviteBox";
 import MembersList from "./settings/MembersList";
+import { TeamMemberType } from "../types/TeamMemberType";
 
 export default function WorkspaceSettings({
   workspaceId,
   closeSettings,
+  members,
+  isLoading,
+  isError,
 }: {
   workspaceId: string;
   closeSettings: VoidFunction;
+  members: TeamMemberType[];
+  isLoading: boolean;
+  isError: boolean;
 }) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const queryClient = useQueryClient();
-
-  const {
-    data = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["members", workspaceId],
-    queryFn: async () => {
-      const res = await axios.get(`${API_URL}/api/member/${workspaceId}`, {
-        withCredentials: true,
-      });
-      return res.data.members;
-    },
-  });
 
   const deleteMemberMutation = useMutation({
     mutationFn: (memberId: string) =>
@@ -54,7 +47,7 @@ export default function WorkspaceSettings({
       axios.patch(
         `${API_URL}/api/member/${workspaceId}/${memberId}`,
         { newRole },
-        { withCredentials: true }
+        { withCredentials: true },
       ),
     onSuccess: (res) => {
       toast.success(res.data.message);
@@ -72,7 +65,7 @@ export default function WorkspaceSettings({
     setPopoverOpen(popoverOpen === i ? null : i);
 
   const popoverRef = useRef<HTMLDivElement | null>(null);
-  const isLast = (i: number) => i >= data.length - 2;
+  const isLast = (i: number) => i >= members.length - 2;
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -116,14 +109,14 @@ export default function WorkspaceSettings({
           <p className="text-sm text-gray-500">Manage access and roles.</p>
         </div>
 
-        <InviteBox workspaceId={workspaceId}/>
+        <InviteBox workspaceId={workspaceId} />
 
         <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mt-6 mb-2">
-          Workspace Members ({data.length})
+          Workspace Members ({members.length})
         </h3>
 
         <MembersList
-          data={data}
+          data={members}
           isLoading={isLoading}
           isError={isError}
           popoverOpen={popoverOpen}

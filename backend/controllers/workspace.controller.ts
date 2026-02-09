@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Workspace } from "../models/Workspace.model";
 import mongoose from "mongoose";
 import { User } from "../models/User.model";
+import { Notification } from "../models/Notification.model";
 
 export const createWorkspace = async (req: Request, res: Response) => {
   try {
@@ -23,6 +24,12 @@ export const createWorkspace = async (req: Request, res: Response) => {
     });
 
     await User.findByIdAndUpdate(userId, { $inc: { workspaces: 1 } });
+
+    await Notification.create({
+      message: `You created a new workspace "${name}"`,
+      type: "system",
+      userId: userId,
+    });
 
     return res.status(201).json({
       message: "Workspace created successfully",
@@ -88,7 +95,7 @@ export const updateWorkspace = async (req: Request, res: Response) => {
         $or: [{ owners: userId }, { admins: userId }, { members: userId }],
       },
       { name, description },
-      { new: true }
+      { new: true },
     );
 
     if (!workspace) {
@@ -116,7 +123,7 @@ export const deleteWorkspace = async (req: Request, res: Response) => {
     const workspaceId = req.params.id;
     const workspace = await Workspace.findByIdAndDelete(workspaceId);
     await User.findByIdAndUpdate(userId, { $inc: { workspaces: -1 } });
-    
+
     if (!workspace) {
       return res
         .status(404)

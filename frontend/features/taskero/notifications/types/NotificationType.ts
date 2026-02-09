@@ -8,4 +8,5 @@ export type NotificationType = {
   read: boolean;
   image?: string;
   token?: string;
+  workspaceName?: string;
 };

@@ -59,6 +59,7 @@ export const inviteMember = async (req: Request, res: Response) => {
       type: "invite",
       userId: memberId,
       token: newInvitation.token,
+      workspaceName: workspace.name,
     });
 
     return res.status(201).json({ message: "Member invited successfully" });
@@ -134,9 +135,12 @@ export const acceptInvite = async (req: Request, res: Response) => {
 
     await workspace.save();
 
-    invite.status = "accepted";
     await Invitation.findOneAndDelete({ token });
-    await invite.save();
+    await Notification.create({
+      message: `Welcome to '${workspace.name}' workspace`,
+      type: "system",
+      userId: invite.memberId,
+    });
 
     return res
       .status(200)
