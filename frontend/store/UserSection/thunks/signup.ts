@@ -9,13 +9,16 @@ export const signup = createAsyncThunk(
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
         data,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       return res.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response.data.message || "The account has not been created"
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data.message || "The account has not been created",
+        );
+      }
     }
-  }
+    return thunkAPI.rejectWithValue("Unexpected error occurred");
+  },
 );

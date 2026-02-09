@@ -9,13 +9,16 @@ export const login = createAsyncThunk(
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         data,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       return res.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response.data.message || "An error occurred while logging in"
-      );
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        return thunkAPI.rejectWithValue(
+          error.response?.data.message || "An error occurred while logging in",
+        );
+      }
+      return thunkAPI.rejectWithValue("Unexpected error occurred");
     }
-  }
+  },
 );

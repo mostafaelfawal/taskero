@@ -15,7 +15,6 @@ export const getMembers = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Workspace not found" });
     }
 
-    // تجميع الأعضاء مع الـ role الخاص بكل واحد
     const formatUsers = (users: any[], role: string) =>
       users.map((u) => ({
         _id: u._id,

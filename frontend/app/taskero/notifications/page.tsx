@@ -1,28 +1,26 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiBell } from "react-icons/fi";
 import { NotificationItem } from "@/features/taskero/notifications/components/NotificationItem";
 import NotificationFilters from "@/features/taskero/notifications/components/NotificationFilters";
 import { NotificationType } from "@/features/taskero/notifications/types/NotificationType";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { getNotifications } from "@/store/NotificationSection/thunks/getNotifications";
 
 export default function Notifications() {
-  const { data = [] } = useQuery({
-    queryKey: ["notifications"],
-    queryFn: async () => {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications`,
-        { withCredentials: true },
-      );
-      return res.data.notifications as NotificationType[];
-    },
-  });
+  const dispatch = useDispatch<AppDispatch>();
+  const notifications = useSelector(
+    (state: RootState) => state.notifications.notifications,
+  );
+  useEffect(() => {
+    dispatch(getNotifications());
+  }, [dispatch]);
 
   const [filteredNotifications, setFilteredNotifications] =
-    useState<NotificationType[]>(data);
+    useState<NotificationType[]>(notifications);
 
   return (
     <motion.main
@@ -45,7 +43,7 @@ export default function Notifications() {
         {/* Filters */}
         <NotificationFilters
           setFilteredNotifications={(n) => setFilteredNotifications(n)}
-          notifications={data}
+          notifications={notifications}
         />
 
         {filteredNotifications.length ? (

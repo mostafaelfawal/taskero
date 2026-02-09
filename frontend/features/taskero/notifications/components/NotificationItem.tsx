@@ -25,13 +25,35 @@ export function NotificationItem({
       );
       return res.data;
     },
+    onSuccess: (res) => {
+      toast.success(res.data.message);
+    },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data?.message || "Failed to accept invite");
+    },
+  });
+  const declineInvitation = useMutation({
+    mutationFn: async (token: string) => {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/invitation/${token}/decline`,
+        {},
+        { withCredentials: true },
+      );
+      return res.data;
+    },
+    onSuccess: (res) => {
+      toast.success(res.data.message);
+    },
+    onError: (error: AxiosError<{ message: string }>) => {
+      toast.error(error.response?.data?.message || "Failed to decline invite");
     },
   });
 
   const handleAcceptInvitation = () => {
     acceptInvitation.mutate(token!);
+  };
+  const handleDeclineInvitation = () => {
+    declineInvitation.mutate(token!);
   };
 
   return (
@@ -80,7 +102,11 @@ export function NotificationItem({
             >
               <FiCheck /> Accept
             </button>
-            <button className="flex items-center gap-2 rounded-md px-3 py-1 text-sm border border-slate-300 dark:border-slate-700">
+            <button
+              disabled={declineInvitation.isPending}
+              onClick={handleDeclineInvitation}
+              className="flex items-center gap-2 rounded-md px-3 py-1 text-sm border border-slate-300 dark:border-slate-700"
+            >
               <FiX /> Decline
             </button>
           </div>
