@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Workspace } from "../models/Workspace.model";
+import { Notification } from "../models/Notification.model";
 
 export const getMembers = async (req: Request, res: Response) => {
   try {
@@ -42,10 +43,12 @@ export const updateMemberRole = async (req: Request, res: Response) => {
     const { newRole } = req.body;
     const workspaceId = req.params.workspaceId;
     const memberId = req.params.memberId;
-    const role = (req as any).role
+    const role = (req as any).role;
 
-    if (role==="admin" && newRole === "owner") {
-      return res.status(400).json({ message: "admin cannot change owners role" })
+    if (role === "admin" && newRole === "owner") {
+      return res
+        .status(400)
+        .json({ message: "admin cannot change owners role" });
     }
     if (!["owner", "admin", "member"].includes(newRole)) {
       return res.status(400).json({ message: "Invalid role" });
@@ -64,13 +67,13 @@ export const updateMemberRole = async (req: Request, res: Response) => {
       newRole === "owner"
         ? "owners"
         : newRole === "admin"
-        ? "admins"
-        : "members";
+          ? "admins"
+          : "members";
 
     const updatedWorkspace = await Workspace.findByIdAndUpdate(
       workspaceId,
       { $addToSet: { [roleField]: memberId } },
-      { new: true }
+      { new: true },
     );
 
     return res.status(200).json({
@@ -97,12 +100,18 @@ export const deleteMember = async (req: Request, res: Response) => {
           owners: memberId,
         },
       },
-      { new: true }
+      { new: true },
     );
 
     if (!updatedWorkspace) {
       return res.status(404).json({ message: "Workspace not found" });
     }
+
+    Notification.create({
+      message: `You were removed from '${updatedWorkspace.name}'`,
+      type: "alert",
+      userId: memberId,
+    });
 
     return res.status(200).json({ message: "Member deleted successfully" });
   } catch (error) {
